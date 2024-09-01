@@ -16,7 +16,13 @@ export default function PopularProducts() {
           iPad combines a magnificent 10.2-inch Retina display, incredible
           performance, multitasking and ease of use.
         </div>
-        <Button variant="bordered" className="mt-4 text-black px-10">
+        <Button
+          onClick={() => {
+            window.location.href = "/smartphones";
+          }}
+          variant="bordered"
+          className="mt-4 text-black px-10"
+        >
           Shop Now
         </Button>
       </div>
@@ -32,7 +38,13 @@ export default function PopularProducts() {
           iPad combines a magnificent 10.2-inch Retina display, incredible
           performance, multitasking and ease of use.
         </div>
-        <Button variant="bordered" className="mt-4 px-10 text-black">
+        <Button
+          onClick={() => {
+            window.location.href = "/smartphones";
+          }}
+          variant="bordered"
+          className="mt-4 px-10 text-black"
+        >
           Shop Now
         </Button>
       </div>
@@ -50,7 +62,13 @@ export default function PopularProducts() {
           iPad combines a magnificent 10.2-inch Retina display, incredible
           performance, multitasking and ease of use.
         </div>
-        <Button variant="bordered" className="px-10 mt-4">
+        <Button
+          onClick={() => {
+            window.location.href = "/smartphones";
+          }}
+          variant="bordered"
+          className="px-10 mt-4"
+        >
           Shop Now
         </Button>
       </div>
@@ -66,7 +84,13 @@ export default function PopularProducts() {
           iPad combines a magnificent 10.2-inch Retina display, incredible
           performance, multitasking and ease of use.
         </div>
-        <Button variant="bordered" className="mt-4 text-white px-10">
+        <Button
+          onClick={() => {
+            window.location.href = "/smartphones";
+          }}
+          variant="bordered"
+          className="mt-4 text-white px-10"
+        >
           Shop Now
         </Button>
       </div>

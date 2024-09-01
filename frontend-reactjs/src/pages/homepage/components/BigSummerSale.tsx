@@ -14,7 +14,13 @@ export default function BigSummerSale() {
           <div className="font-bold text-7xl my-2">BIG SUMMER SALE !</div>
           <p>Commodo fames vitae vitae leo mauris in. Eu consequat.</p>
           <div className="grid place-items-center">
-            <Button variant="bordered" className="px-10 my-10 text-white">
+            <Button
+              onClick={() => {
+                window.location.href = "/smartphones";
+              }}
+              variant="bordered"
+              className="px-10 my-10 text-white"
+            >
               Shop Now
             </Button>
           </div>

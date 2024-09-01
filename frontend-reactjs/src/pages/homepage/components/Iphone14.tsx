@@ -29,7 +29,13 @@ function Texts() {
           Created to change everything for the better. For everyone
         </p>
       </div>
-      <Button variant="bordered" className="px-10 py-6 text-white">
+      <Button
+        onClick={() => {
+          window.location.href = "/smartphones";
+        }}
+        variant="bordered"
+        className="px-10 py-6 text-white"
+      >
         Shop Now
       </Button>
     </div>
