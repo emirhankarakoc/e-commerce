@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className="bg-black grid grid-cols-4 place-items-center p-20">
+    <div className=" mt-20 bg-black grid grid-cols-4 place-items-center p-20">
       <div className="col-span-2">
         <div className="font-oswald text-5xl text-white">KARAKOC</div>
         <div className="text-gray-300">
