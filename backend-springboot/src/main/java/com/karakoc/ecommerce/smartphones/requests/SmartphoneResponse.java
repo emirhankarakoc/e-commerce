@@ -1,6 +1,7 @@
 package com.karakoc.ecommerce.smartphones.requests;
 
 import com.karakoc.ecommerce.products.requests.ProductResponse;
+import com.karakoc.ecommerce.smartphones.details.Details;
 import lombok.Data;
 
 @Data
@@ -10,5 +11,6 @@ public class SmartphoneResponse extends ProductResponse {
     private String memory;
     private String battery;
     private String screenSize;
+    private Details details;
 
 }

@@ -107,6 +107,8 @@ public class SmartphoneManager implements SmartphoneService{
         productResponse.setMemory(smartphone.getMemory());
         productResponse.setBattery(smartphone.getBattery());
         productResponse.setReviews(smartphone.getReviews());
+
+        productResponse.setDetails(smartphone.getDetails());
         return productResponse;
     }
 
