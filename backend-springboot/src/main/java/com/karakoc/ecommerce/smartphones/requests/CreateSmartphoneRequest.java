@@ -14,4 +14,11 @@ public class CreateSmartphoneRequest {
     private String numberOfCores;
     private String memory;
     private String battery;
+    private String description;
+    private String screenDiagonal;
+    private String screenResolution;
+    private String screenRefreshRate;
+    private String pixelDensity;
+    private String screenType;
+    private String additionaly;
 }

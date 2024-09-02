@@ -18,9 +18,9 @@ public class Product {
 
     @OneToMany
     @JoinColumn(name = "imageId")
-    public List<Image> images;
+    private List<Image> images;
 
     @OneToMany
-    @JoinColumn(name = "reviewId")
+    @JoinColumn(name = "review_id") // Corrected annotation
     private List<Review> reviews;
 }

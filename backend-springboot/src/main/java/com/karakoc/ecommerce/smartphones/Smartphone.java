@@ -2,8 +2,8 @@ package com.karakoc.ecommerce.smartphones;
 
 
 import com.karakoc.ecommerce.products.Product;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import com.karakoc.ecommerce.smartphones.details.Details;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -19,6 +19,9 @@ public class Smartphone extends Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @OneToOne
+    @JoinColumn(name = "detailId")
+    private Details details;
 
 
 }

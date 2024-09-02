@@ -3,6 +3,7 @@ package com.karakoc.ecommerce.cloudinary.controller;
 import com.karakoc.ecommerce.cloudinary.entity.Image;
 import com.karakoc.ecommerce.cloudinary.service.CloudinaryService;
 import com.karakoc.ecommerce.cloudinary.service.ImageService;
+import com.karakoc.ecommerce.products.Product;
 import com.karakoc.ecommerce.products.ProductType;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,7 +59,7 @@ public class CloudinaryController {
             return new ResponseEntity<>("Image not found.", HttpStatus.NOT_FOUND);
         }
         Image image = imageOptional.get();
-        String cloudinaryImageId = image.getImageId();
+        String cloudinaryImageId = image.getCloudImageId();
         try {
             cloudinaryService.delete(cloudinaryImageId);
         } catch (IOException e) {

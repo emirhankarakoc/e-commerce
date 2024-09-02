@@ -30,7 +30,7 @@ public class ReviewManager implements ReviewService{
         review.setDate(LocalDate.now());
         review.setContent(request.getContent());
         review.setSmartphoneId(request.getSmartphoneId());
-        review.setPoint(review.getPoint());
+        review.setPoint(request.getPoint());
         reviewRepository.save(review);
         smartphone.getReviews().add(review);
         smartphoneRepository.save(smartphone);

@@ -8,18 +8,18 @@ import com.karakoc.ecommerce.cloudinary.service.CloudinaryService;
 import com.karakoc.ecommerce.exceptions.general.BadRequestException;
 import com.karakoc.ecommerce.exceptions.general.NotfoundException;
 import com.karakoc.ecommerce.products.ProductType;
-import com.karakoc.ecommerce.products.requests.ProductResponse;
-import com.karakoc.ecommerce.reviews.Review;
 import com.karakoc.ecommerce.reviews.ReviewRepository;
 import com.karakoc.ecommerce.reviews.ReviewService;
+import com.karakoc.ecommerce.smartphones.details.Details;
+import com.karakoc.ecommerce.smartphones.details.DetailsRepository;
 import com.karakoc.ecommerce.smartphones.requests.CreateSmartphoneRequest;
 import com.karakoc.ecommerce.smartphones.requests.SmartphoneResponse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.aspectj.weaver.AjAttribute;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.beans.Transient;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,7 @@ public class SmartphoneManager implements SmartphoneService{
     private final SmartphoneRepository smartphoneRepository;
     private final CloudinaryService cloudinaryService;
     private final ImageRepository imageRepository;
+    private final DetailsRepository detailsRepository;
     private final ReviewRepository reviewRepository;
     private final ReviewService reviewService;
 
@@ -52,7 +53,8 @@ public class SmartphoneManager implements SmartphoneService{
         smartphone.setBattery(request.getBattery());
         smartphone.setReviews(new ArrayList<>());
         smartphone.setImages(new ArrayList<>());
-
+        Details details = createDetail(request,smartphone.getId());
+        smartphone.setDetails(details);
         List<Image> images = new ArrayList<>();
 
         for (MultipartFile resim : request.getMultipartFiles()){
@@ -66,14 +68,14 @@ public class SmartphoneManager implements SmartphoneService{
                 Image   smartphoneImage = new Image();
                 smartphoneImage.setId(UUID.randomUUID().toString());
                 smartphoneImage.setImageUrl((String) uploadResult.get("url"));
-                smartphoneImage.setImageId(uploadResult.get("public_id").toString());
+                smartphoneImage.setCloudImageId(uploadResult.get("public_id").toString());
                 smartphoneImage.setProductType(ProductType.SMARTPHONE);
                 smartphoneImage.setName((String) uploadResult.get("original_filename"));
                 imageRepository.save(smartphoneImage);
                 images.add(smartphoneImage);
 
             } catch (IOException e) {
-                throw new BadRequestException(e.getMessage());
+                //throw new BadRequestException(e.getMessage());
             }
         }
 
@@ -110,6 +112,7 @@ public class SmartphoneManager implements SmartphoneService{
 
 
 
+
 private List<ImageDTO> imagesToDTOS(List<Image> images) {
         List<ImageDTO> dto = new ArrayList<>();
         for (Image image : images) {
@@ -118,5 +121,20 @@ private List<ImageDTO> imagesToDTOS(List<Image> images) {
             dto.add(imageDTO);
         }
         return dto;
+}
+
+private Details createDetail(CreateSmartphoneRequest request,String smartphoneId){
+    Details details = new Details();
+    details.setId(UUID.randomUUID().toString());
+    details.setDescription(request.getDescription());
+    details.setScreenDiagonal(request.getScreenDiagonal());
+    details.setScreenResolution(request.getScreenResolution());
+    details.setScreenRefreshRate(request.getScreenRefreshRate());
+    details.setPixelDensity(request.getPixelDensity());
+    details.setScreenType(request.getScreenType());
+    details.setAdditionaly(request.getAdditionaly());
+    details.setSmartphoneId(smartphoneId);
+    return detailsRepository.save(details);
+
 }
 }
