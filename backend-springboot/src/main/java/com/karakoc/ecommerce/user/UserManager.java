@@ -3,7 +3,7 @@ package com.karakoc.ecommerce.user;
 import com.karakoc.ecommerce.exceptions.general.BadRequestException;
 import com.karakoc.ecommerce.exceptions.general.NotfoundException;
 import com.karakoc.ecommerce.exceptions.strings.ExceptionMessages;
-import com.karakoc.ecommerce.security.WebSecurityConfig;
+import com.karakoc.ecommerce.WebSecurityConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,35 +1,31 @@
 package com.karakoc.ecommerce.cloudinary.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.karakoc.ecommerce.products.ProductType;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Image {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String name;
     private String imageUrl;
     private String imageId;
 
-    public Image(String name, String imageUrl, String imageId) {
+    @Enumerated
+    private ProductType productType;
+
+    public Image(String name, String imageUrl, String imageId, ProductType productType) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.imageUrl = imageUrl;
         this.imageId = imageId;
+        this.productType = productType;
     }
 
 }

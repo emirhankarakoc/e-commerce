@@ -12,13 +12,16 @@ import java.util.List;
 @Data
 @Entity
 public class User {
-    //buraya birsey eklersen, gidip UserPrincipal'a da ekle. orasi senin db scheman gibi birseyin.
     @Id
     private String id;
     private String email;
     @JsonIgnore
     private String password;
     private String role;
+    //TODO  put user yap, resim ve fullname eklet.
+    private String profilePhotoPath;
+    private String fullName;
+
 
 
     public static UserDTO userToDTO(User user){

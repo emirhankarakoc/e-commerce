@@ -1,5 +1,7 @@
-package com.karakoc.ecommerce.security;
+package com.karakoc.ecommerce;
 
+import com.karakoc.ecommerce.security.CustomUserDetailService;
+import com.karakoc.ecommerce.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -53,7 +55,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/accounts/**").permitAll() //login - register endpoints
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/products/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admins/**").permitAll()
+                        .requestMatchers("/smartphones/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

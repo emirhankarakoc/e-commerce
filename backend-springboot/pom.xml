@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.karakoc</groupId>
-	<artifactId>fullstack-app</artifactId>
+	<artifactId>e-commerce-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>fullstack-app</name>
 	<description>fullstack-app</description>

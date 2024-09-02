@@ -1,5 +1,7 @@
 package com.karakoc.ecommerce.products;
 
+import com.karakoc.ecommerce.cloudinary.entity.Image;
+import com.karakoc.ecommerce.smartphones.SmartphoneService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -14,15 +16,14 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Ürün oluştur", description = "Müzayede'ye bağlamak için ürün oluştur.")
-
-    public Product createProduct(@ModelAttribute CreateProductRequest request) throws IOException {
-        return productService.createProduct(request);
-    }
 
     @GetMapping
     public List<Product> getProducts() {
         return productService.getProducts();
     }
+    @GetMapping("/images/type")
+    public List<Image> getImages(@RequestParam ProductType type){
+        return productService.getImages(type);
+    }
+
 }

@@ -1,8 +1,11 @@
 package com.karakoc.ecommerce.products;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.karakoc.ecommerce.cloudinary.entity.Image;
+import com.karakoc.ecommerce.reviews.Review;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -10,10 +13,14 @@ public class Product {
     @Id
     private String id;
     private String brandName;
-    private String battery;
-    private String memory;
     private String modelName;
     private String price;
-    private String rating;
-    private String imageUrl;
+
+    @OneToMany
+    @JoinColumn(name = "imageId")
+    public List<Image> images;
+
+    @OneToMany
+    @JoinColumn(name = "reviewId")
+    private List<Review> reviews;
 }

@@ -1,4 +1,4 @@
-package com.karakoc.ecommerce.products;
+package com.karakoc.ecommerce.products.requests;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;

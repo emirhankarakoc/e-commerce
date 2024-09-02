@@ -3,6 +3,7 @@ package com.karakoc.ecommerce.cloudinary.controller;
 import com.karakoc.ecommerce.cloudinary.entity.Image;
 import com.karakoc.ecommerce.cloudinary.service.CloudinaryService;
 import com.karakoc.ecommerce.cloudinary.service.ImageService;
+import com.karakoc.ecommerce.products.ProductType;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,13 +44,15 @@ public class CloudinaryController {
         Image image = new Image(
                 (String) result.get("original_filename"),
                 (String) result.get("url"),
-                (String) result.get("public_id"));
+                (String) result.get("public_id"),
+                ProductType.SMARTPHONE
+        );
         imageService.save(image);
         return new ResponseEntity<>("Image uploaded successfully. ", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") int id) {
+    public ResponseEntity<String> delete(@PathVariable("id") String id) {
         Optional<Image> imageOptional = imageService.getOne(id);
         if (imageOptional.isEmpty()) {
             return new ResponseEntity<>("Image not found.", HttpStatus.NOT_FOUND);

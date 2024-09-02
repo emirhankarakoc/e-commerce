@@ -1,5 +1,7 @@
 package com.karakoc.ecommerce.products;
 
+import com.karakoc.ecommerce.cloudinary.entity.Image;
+import com.karakoc.ecommerce.cloudinary.repository.ImageRepository;
 import com.karakoc.ecommerce.cloudinary.service.CloudinaryService;
 import com.karakoc.ecommerce.exceptions.general.BadRequestException;
 import lombok.AllArgsConstructor;
@@ -17,35 +19,18 @@ public class ProductManager implements ProductService{
 
     private final ProductRepository productRepository;
     private final CloudinaryService cloudinaryService;
+    private final ImageRepository imageRepository;
 
-    public Product createProduct(CreateProductRequest request) throws IOException {
-         Product product = new Product();
-        product.setId(UUID.randomUUID().toString());
-        product.setBattery(request.getBattery());
-        product.setMemory(request.getMemory());
-        product.setPrice(request.getPrice());
-        product.setRating(request.getRating());
-        product.setBrandName(request.getBrandName());
-        product.setModelName(request.getModelName());
-
-        try {
-            if (request.getMultipartFile().isEmpty()) {
-                throw new BadRequestException("Empty file.");
-            }
-            // Cloudinary'ye yükle
-            Map uploadResult = cloudinaryService.upload(request.getMultipartFile());
-            String photoPath = (String) uploadResult.get("url"); // Cloudinary'den gelen URL'yi al
-            product.setImageUrl(photoPath); // Ürünün fotoğraf yolunu ayarla
-        } catch (IOException e) {
-            throw new BadRequestException(e.getMessage());
-        }
-        return productRepository.save(product);
-    }
 
     @Override
     public List<Product> getProducts() {
         return productRepository.findAll();
         //end
+    }
+
+    public List<Image> getImages(ProductType type) {
+        List<Image> images = imageRepository.findAllByProductType(type);
+        return images;
     }
 }
 
