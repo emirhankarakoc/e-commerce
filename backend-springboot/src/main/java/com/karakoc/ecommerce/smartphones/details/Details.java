@@ -10,8 +10,9 @@ import lombok.Data;
 public class Details {
     @Id
     private String id;
+
     @Column(name = "TEXT")
-    private String description;
+    private String descriptionDetails;
 
     private String screenDiagonal;
     private String screenResolution;

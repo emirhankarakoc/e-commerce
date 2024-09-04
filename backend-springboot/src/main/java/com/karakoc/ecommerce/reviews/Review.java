@@ -13,8 +13,9 @@ public class Review {
     @Id
     private String id;
     private String smartphoneId;
-    private String userId;
-
+    private String userFullname;
+    @Column(columnDefinition = "TEXT")
+    private String userProfilePictureImageUrl;
     @Column(columnDefinition = "TEXT")
     private String content;
 

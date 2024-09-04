@@ -1,6 +1,6 @@
 package com.karakoc.ecommerce.products.requests;
 
-import com.karakoc.ecommerce.cloudinary.entity.Image;
+import com.karakoc.ecommerce.smartphones.colors.Color;
 import com.karakoc.ecommerce.cloudinary.entity.ImageDTO;
 import com.karakoc.ecommerce.reviews.Review;
 import lombok.Data;
@@ -13,6 +13,8 @@ public class ProductResponse {
     private String brandName;
     private String modelName;
     private String price;
+    private String oldPrice;
+    private List<Color> colors;
     private List<ImageDTO> imageLinks;
     private List<Review> reviews;
 

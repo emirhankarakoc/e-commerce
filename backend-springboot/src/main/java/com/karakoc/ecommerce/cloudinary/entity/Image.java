@@ -5,6 +5,8 @@ import com.karakoc.ecommerce.products.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -15,6 +17,7 @@ public class Image {
     @Id
     private String id;
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String imageUrl;
     private String cloudImageId;
 
@@ -28,6 +31,17 @@ public class Image {
         this.imageUrl = imageUrl;
         this.cloudImageId = cloudImageId;
         this.productType = productType;
+    }
+
+
+    public static List<ImageDTO> imagesToDTOS(List<Image> images) {
+        List<ImageDTO> dto = new ArrayList<>();
+        for (Image image : images) {
+            ImageDTO imageDTO = new ImageDTO();
+            imageDTO.setImageUrl(image.getImageUrl());
+            dto.add(imageDTO);
+        }
+        return dto;
     }
 
 

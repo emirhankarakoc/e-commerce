@@ -15,5 +15,7 @@ public interface SmartphoneService {
     Smartphone createSmartphone(CreateSmartphoneRequest request);
     SmartphoneResponse getSmartphone(String id);
 
+    List<SmartphoneResponse> getAllSmartphones();
+
 
 }

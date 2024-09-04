@@ -56,6 +56,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/products/**").permitAll()
                         .requestMatchers("/admins/**").permitAll()
+                        .requestMatchers("/reviews/**").permitAll()
                         .requestMatchers("/smartphones/**").permitAll()
                         .anyRequest().authenticated()
                 );

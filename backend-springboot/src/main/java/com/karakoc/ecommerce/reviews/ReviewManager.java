@@ -5,6 +5,7 @@ import com.karakoc.ecommerce.exceptions.general.NotfoundException;
 import com.karakoc.ecommerce.reviews.requests.CreateReviewRequest;
 import com.karakoc.ecommerce.smartphones.Smartphone;
 import com.karakoc.ecommerce.smartphones.SmartphoneRepository;
+import com.karakoc.ecommerce.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import java.util.UUID;
 public class ReviewManager implements ReviewService{
     private final ReviewRepository reviewRepository;
     private final SmartphoneRepository smartphoneRepository;
+    private final UserRepository userRepository;
+
 
 
     @Override
@@ -26,7 +29,7 @@ public class ReviewManager implements ReviewService{
         Smartphone smartphone = smartphoneRepository.findById(request.getSmartphoneId()).orElseThrow(()-> new NotfoundException("Smartphone not found"));
         Review review = new Review();
         review.setId(UUID.randomUUID().toString());
-        review.setUserId(userId);
+        review.setUserFullname(userRepository.findById(userId).get().getFullName());
         review.setDate(LocalDate.now());
         review.setContent(request.getContent());
         review.setSmartphoneId(request.getSmartphoneId());

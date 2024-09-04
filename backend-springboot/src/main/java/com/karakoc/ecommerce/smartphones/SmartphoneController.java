@@ -27,6 +27,11 @@ public class SmartphoneController {
         return smartphoneService.getSmartphone(id);
     }
 
+    @GetMapping
+    public List<SmartphoneResponse> getAllSmartphones() {
+        return smartphoneService.getAllSmartphones();
+    }
+
 
 }
 

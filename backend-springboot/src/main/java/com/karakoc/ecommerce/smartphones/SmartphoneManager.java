@@ -1,8 +1,9 @@
 package com.karakoc.ecommerce.smartphones;
 
 
+import com.karakoc.ecommerce.smartphones.colors.Color;
 import com.karakoc.ecommerce.cloudinary.entity.Image;
-import com.karakoc.ecommerce.cloudinary.entity.ImageDTO;
+import com.karakoc.ecommerce.smartphones.colors.ColorRepository;
 import com.karakoc.ecommerce.cloudinary.repository.ImageRepository;
 import com.karakoc.ecommerce.cloudinary.service.CloudinaryService;
 import com.karakoc.ecommerce.exceptions.general.BadRequestException;
@@ -12,11 +13,12 @@ import com.karakoc.ecommerce.reviews.ReviewRepository;
 import com.karakoc.ecommerce.reviews.ReviewService;
 import com.karakoc.ecommerce.smartphones.details.Details;
 import com.karakoc.ecommerce.smartphones.details.DetailsRepository;
+import com.karakoc.ecommerce.smartphones.memories.Memory;
+import com.karakoc.ecommerce.smartphones.memories.MemoryRepository;
 import com.karakoc.ecommerce.smartphones.requests.CreateSmartphoneRequest;
 import com.karakoc.ecommerce.smartphones.requests.SmartphoneResponse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.aspectj.weaver.AjAttribute;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.karakoc.ecommerce.smartphones.Smartphone.smartphoneResponseList;
+import static com.karakoc.ecommerce.smartphones.Smartphone.smartphoneToResponse;
+
 @Service
 @AllArgsConstructor
 public class SmartphoneManager implements SmartphoneService{
@@ -33,28 +38,60 @@ public class SmartphoneManager implements SmartphoneService{
     private final CloudinaryService cloudinaryService;
     private final ImageRepository imageRepository;
     private final DetailsRepository detailsRepository;
+    private final ColorRepository colorRepository;
     private final ReviewRepository reviewRepository;
     private final ReviewService reviewService;
+    private final MemoryRepository memoryRepository;
 
 
     @Override
     @Transactional
-
     public Smartphone createSmartphone(CreateSmartphoneRequest request) {
+        List<Color> colors = new ArrayList<>();
+        List<Memory> memoryOptions = new ArrayList<>();
+
+        for (String colorCode: request.getColorCodes()){
+            Color color = new Color();
+            color.setCode(colorCode);
+            color.setId(UUID.randomUUID().toString());
+            colors.add(color);
+        }
+        colorRepository.saveAll(colors);
+
+        for (String memory: request.getMemoryOptions()){
+            Memory memory1 = new Memory();
+            memory1.setId(UUID.randomUUID().toString());
+            memory1.setValue(memory);
+            memoryOptions.add(memory1);
+        }
+        memoryRepository.saveAll(memoryOptions);
+
+
         Smartphone smartphone = new Smartphone();
+        smartphone.setColors(colors);
+        smartphone.setMemoryOptions(memoryOptions);
         smartphone.setId(UUID.randomUUID().toString());
         smartphone.setBrandName(request.getBrandName());
         smartphone.setModelName(request.getModelName());
         smartphone.setPrice(request.getPrice());
+        smartphone.setOldPrice(request.getOldPrice());
         smartphone.setScreenSize(request.getScreenSize());
         smartphone.setCpu(request.getCpu());
-        smartphone.setMemory(request.getMemory());
         smartphone.setNumberOfCores(request.getNumberOfCores());
         smartphone.setBattery(request.getBattery());
-        smartphone.setReviews(new ArrayList<>());
-        smartphone.setImages(new ArrayList<>());
+        smartphone.setDescription(request.getDescription());
+        smartphone.setFrontCameraProps(request.getFrontCameraProps());
+        smartphone.setMainCameraProps(request.getMainCameraProps());
+        smartphone.setGuaranteeOption(request.getGuaranteeOption());
+
+
+
+
         Details details = createDetail(request,smartphone.getId());
         smartphone.setDetails(details);
+
+        smartphone.setReviews(new ArrayList<>());
+        smartphone.setImages(new ArrayList<>());
         List<Image> images = new ArrayList<>();
 
         for (MultipartFile resim : request.getMultipartFiles()){
@@ -93,42 +130,23 @@ public class SmartphoneManager implements SmartphoneService{
     @Override
     public SmartphoneResponse getSmartphone(String id) {
         Smartphone smartphone = smartphoneRepository.findById(id).orElseThrow(()-> new NotfoundException("Smartphone not found."));
-        SmartphoneResponse productResponse = new SmartphoneResponse();
-        productResponse.setId(smartphone.getId());
-        productResponse.setBrandName(smartphone.getBrandName());
-        productResponse.setModelName(smartphone.getModelName());
-        productResponse.setPrice(smartphone.getPrice());
-        productResponse.setScreenSize(smartphone.getScreenSize());
-        productResponse.setPrice(smartphone.getPrice());
-        List<ImageDTO> dto = imagesToDTOS(smartphone.getImages());
-        productResponse.setImageLinks(dto);
-        productResponse.setCpu(smartphone.getCpu());
-        productResponse.setNumberOfCores(smartphone.getNumberOfCores());
-        productResponse.setMemory(smartphone.getMemory());
-        productResponse.setBattery(smartphone.getBattery());
-        productResponse.setReviews(smartphone.getReviews());
+      return smartphoneToResponse(smartphone);
+    }
 
-        productResponse.setDetails(smartphone.getDetails());
-        return productResponse;
+    @Override
+    public List<SmartphoneResponse> getAllSmartphones() {
+        List<Smartphone> smartphones = smartphoneRepository.findAll();
+        List<SmartphoneResponse> responseList = smartphoneResponseList(smartphones);
+        return responseList;
     }
 
 
 
 
-private List<ImageDTO> imagesToDTOS(List<Image> images) {
-        List<ImageDTO> dto = new ArrayList<>();
-        for (Image image : images) {
-            ImageDTO imageDTO = new ImageDTO();
-            imageDTO.setImageUrl(image.getImageUrl());
-            dto.add(imageDTO);
-        }
-        return dto;
-}
-
 private Details createDetail(CreateSmartphoneRequest request,String smartphoneId){
     Details details = new Details();
     details.setId(UUID.randomUUID().toString());
-    details.setDescription(request.getDescription());
+    details.setDescriptionDetails(request.getDescriptionDetails());
     details.setScreenDiagonal(request.getScreenDiagonal());
     details.setScreenResolution(request.getScreenResolution());
     details.setScreenRefreshRate(request.getScreenRefreshRate());
