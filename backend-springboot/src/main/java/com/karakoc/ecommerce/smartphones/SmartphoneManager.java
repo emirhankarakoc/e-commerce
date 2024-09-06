@@ -1,7 +1,6 @@
 package com.karakoc.ecommerce.smartphones;
 
 
-import com.karakoc.ecommerce.cloudinary.entity.ImageDTO;
 import com.karakoc.ecommerce.reviews.Review;
 import com.karakoc.ecommerce.smartphones.colors.Color;
 import com.karakoc.ecommerce.cloudinary.entity.Image;
@@ -12,13 +11,13 @@ import com.karakoc.ecommerce.exceptions.general.BadRequestException;
 import com.karakoc.ecommerce.exceptions.general.NotfoundException;
 import com.karakoc.ecommerce.products.ProductType;
 import com.karakoc.ecommerce.reviews.ReviewRepository;
-import com.karakoc.ecommerce.reviews.ReviewService;
+import com.karakoc.ecommerce.smartphones.colors.CreateColorRequest;
 import com.karakoc.ecommerce.smartphones.details.Details;
 import com.karakoc.ecommerce.smartphones.details.DetailsRepository;
+import com.karakoc.ecommerce.smartphones.memories.CreateMemoryRequest;
 import com.karakoc.ecommerce.smartphones.memories.Memory;
 import com.karakoc.ecommerce.smartphones.memories.MemoryRepository;
 import com.karakoc.ecommerce.smartphones.requests.CreateSmartphoneRequest;
-import com.karakoc.ecommerce.smartphones.requests.SmartphoneResponse;
 import com.karakoc.ecommerce.smartphones.requests.UpdateSmartphoneRequest;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -31,8 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.karakoc.ecommerce.smartphones.Smartphone.smartphoneResponseList;
-import static com.karakoc.ecommerce.smartphones.Smartphone.smartphoneToResponse;
 
 @Service
 @AllArgsConstructor
@@ -50,31 +47,9 @@ public class SmartphoneManager implements SmartphoneService{
     @Override
     @Transactional
     public Smartphone createSmartphone(CreateSmartphoneRequest request) {
-        List<Color> colors = new ArrayList<>();
-        List<Memory> memoryOptions = new ArrayList<>();
+
         Smartphone smartphone = new Smartphone();
         smartphone.setId(UUID.randomUUID().toString());
-
-        for (String colorCode: request.getColorCodes()){
-            Color color = new Color();
-            color.setId(UUID.randomUUID().toString());
-            color.setCode(colorCode);
-            color.setSmartphoneId(smartphone.getId());
-            colors.add(color);
-        }
-        colorRepository.saveAll(colors);
-
-        for (String memory: request.getMemoryOptions()){
-            Memory memory1 = new Memory();
-            memory1.setId(UUID.randomUUID().toString());
-            memory1.setValue(memory);
-            memory1.setSmartphoneId(smartphone.getId());
-            memoryOptions.add(memory1);
-        }
-        memoryRepository.saveAll(memoryOptions);
-
-
-
         smartphone.setBrandName(request.getBrandName());
         smartphone.setModelName(request.getModelName());
         smartphone.setPrice(request.getPrice());
@@ -88,14 +63,33 @@ public class SmartphoneManager implements SmartphoneService{
         smartphone.setMainCameraProps(request.getMainCameraProps());
         smartphone.setGuaranteeOption(request.getGuaranteeOption());
 
+        smartphone.setColors(new ArrayList<>());
+        smartphone.setMemoryOptions(new ArrayList<>());
+        smartphone.setReviews(new ArrayList<>());
+        smartphone.setImages(new ArrayList<>());
+
+        for (String colorName: request.getColorNames()){
+           Color color = createColor(colorName);
+           smartphone.getColors().add(color);
+        }
+
+
+        for (String memoryValues: request.getMemoryOptions()){
+            Memory memory = createMemory(memoryValues);
+            smartphone.getMemoryOptions().add(memory);
+        }
+
+        smartphoneRepository.save(smartphone);
+
+
+
 
 
 
         Details details = createDetail(request,smartphone.getId());
         smartphone.setDetails(details);
 
-        smartphone.setReviews(new ArrayList<>());
-        smartphone.setImages(new ArrayList<>());
+
         List<Image> images = new ArrayList<>();
 
         for (MultipartFile resim : request.getMultipartFiles()){
@@ -123,9 +117,8 @@ public class SmartphoneManager implements SmartphoneService{
         for (Image image : images) {
             smartphone.getImages().add(image);
         }
-        smartphone.setColors(colors);
-        smartphone.setMemoryOptions(memoryOptions);
 
+        // Smartphone'u kaydet
         smartphoneRepository.save(smartphone);
         return smartphone;
 
@@ -133,63 +126,11 @@ public class SmartphoneManager implements SmartphoneService{
 
     @Override
     @Transactional
-    public String updateSmartphone(String id, UpdateSmartphoneRequest request) {
+    public String updateSmartphoneBasics(String id, UpdateSmartphoneRequest request) {
         // Akıllı telefonu bul
         Smartphone smartphone = smartphoneRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Smartphone not found"));
-
-        // Renkleri güncelle
-        if (request.getColorCodes() != null) {
-            List<Color> colors = new ArrayList<>();
-            for (String colorCode : request.getColorCodes()) {
-                Color color = new Color();
-                color.setCode(colorCode);
-                color.setSmartphoneId(smartphone.getId()); // İlişkilendir
-                colors.add(color);
-            }
-            colorRepository.saveAll(colors);
-            smartphone.setColors(colors);
-        }
-
-        // Bellek seçeneklerini güncelle
-        if (request.getMemoryOptions() != null) {
-            List<Memory> memoryOptions = new ArrayList<>();
-            for (String memory : request.getMemoryOptions()) {
-                Memory memory1 = new Memory();
-                memory1.setValue(memory);
-                memory1.setSmartphoneId(smartphone.getId()); // İlişkilendir
-                memoryOptions.add(memory1);
-            }
-            memoryRepository.saveAll(memoryOptions);
-            smartphone.setMemoryOptions(memoryOptions);
-        }
-
-        // Detayları güncelle
-        if (request.getDescriptionDetails() != null || request.getScreenDiagonal() != null ||
-                request.getScreenResolution() != null || request.getScreenRefreshRate() != null ||
-                request.getPixelDensity() != null || request.getScreenType() != null ||
-                request.getAdditionaly() != null) {
-
-            Details details = smartphone.getDetails();
-            if (details == null) {
-                details = new Details();
-                details.setId(UUID.randomUUID().toString());
-                details.setSmartphoneId(smartphone.getId()); // İlişkilendir
-            }
-
-            details.setDescriptionDetails(request.getDescriptionDetails());
-            details.setScreenDiagonal(request.getScreenDiagonal());
-            details.setScreenResolution(request.getScreenResolution());
-            details.setScreenRefreshRate(request.getScreenRefreshRate());
-            details.setPixelDensity(request.getPixelDensity());
-            details.setScreenType(request.getScreenType());
-            details.setAdditionaly(request.getAdditionaly());
-
-            detailsRepository.save(details);
-            smartphone.setDetails(details);
-        }
-
-        // Diğer alanları güncelle
+        // Basic alanları güncelle
         smartphone.setBrandName(request.getBrandName());
         smartphone.setModelName(request.getModelName());
         smartphone.setPrice(request.getPrice());
@@ -203,16 +144,16 @@ public class SmartphoneManager implements SmartphoneService{
         smartphone.setMainCameraProps(request.getMainCameraProps());
         smartphone.setGuaranteeOption(request.getGuaranteeOption());
 
-        // Güncellenmiş akıllı telefonu kaydet
+        // Güncellenmiş smartphoneu kaydet
         smartphoneRepository.save(smartphone);
 
         return "Smartphone updated successfully";
     }
 
     @Override
-    public SmartphoneResponse getSmartphone(String id) {
+    public Smartphone getSmartphone(String id) {
         Smartphone smartphone = smartphoneRepository.findById(id).orElseThrow(()-> new NotfoundException("Smartphone not found."));
-      return smartphoneToResponse(smartphone);
+      return smartphone;
     }
 
 
@@ -234,19 +175,29 @@ public class SmartphoneManager implements SmartphoneService{
     }
 
     @Override
-    public List<SmartphoneResponse> getAllSmartphones() {
+    public List<Smartphone> getAllSmartphones() {
         List<Smartphone> smartphones = smartphoneRepository.findAll();
-        List<SmartphoneResponse> responseList = smartphoneResponseList(smartphones);
-        return responseList;
+        return smartphones;
     }
 
+    private Color createColor(String colorHexCode) {
+        Color color = new Color();
+        color.setId(UUID.randomUUID().toString());
+        color.setCode(colorHexCode);
+        return colorRepository.save(color);
+    }
 
+    private Memory createMemory(String  value) {
+        Memory memory = new Memory();
+        memory.setId(UUID.randomUUID().toString());
+        memory.setValue(value);
+        return memoryRepository.save(memory);
+    }
 
-
-private Details createDetail(CreateSmartphoneRequest request,String smartphoneId){
+    private Details createDetail(CreateSmartphoneRequest request, String smartphoneId){
     Details details = new Details();
     details.setId(UUID.randomUUID().toString());
-    details.setDescriptionDetails(request.getDescriptionDetails());
+    details.setDescription(request.getDescriptionDetails());
     details.setScreenDiagonal(request.getScreenDiagonal());
     details.setScreenResolution(request.getScreenResolution());
     details.setScreenRefreshRate(request.getScreenRefreshRate());

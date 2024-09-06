@@ -16,7 +16,7 @@ public class Details {
     @Id
     private String id;
     @Column(columnDefinition = "TEXT")
-    private String descriptionDetails;
+    private String description;
     private String screenDiagonal;
     private String screenResolution;
     private String screenRefreshRate;

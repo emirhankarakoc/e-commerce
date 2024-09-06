@@ -34,9 +34,9 @@ public class AdminController {
     public String deleteSmartphone(@PathVariable String id) throws IOException {
         return smartphoneService.deleteSmartphone(id);
     }
-    @PutMapping("/smartphone/{id}")
-    public String updateSmartphone(@PathVariable String id, @RequestBody UpdateSmartphoneRequest smartphone) {
-        return smartphoneService.updateSmartphone(id,smartphone);
+    @PutMapping("/smartphone/{id}/basic")
+    public String updateSmartphoneBasic(@PathVariable String id, @RequestBody UpdateSmartphoneRequest smartphone) {
+        return smartphoneService.updateSmartphoneBasics(id,smartphone);
     }
 
 

@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class CreateSmartphoneRequest {
     private MultipartFile[] multipartFiles; // Birden fazla dosya için dizi
-    private String[] colorCodes;
+    private String[] colorNames;
     private String[] memoryOptions;
     private String brandName;
     private String modelName;
@@ -20,6 +20,7 @@ public class CreateSmartphoneRequest {
     private String cpu;
     private String numberOfCores;
     private String battery;
+    //details
     private String descriptionDetails;
     private String screenDiagonal;
     private String screenResolution;

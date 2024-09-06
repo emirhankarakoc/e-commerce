@@ -15,5 +15,5 @@ public class Memory {
     @Id
     private String id;
     private String value;
-    private String smartphoneId;
+
 }

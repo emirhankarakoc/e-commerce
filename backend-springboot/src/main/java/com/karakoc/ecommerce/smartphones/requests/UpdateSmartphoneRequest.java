@@ -4,8 +4,6 @@ import lombok.Data;
 
 @Data
 public class UpdateSmartphoneRequest {
-    private String[] colorCodes;
-    private String[] memoryOptions;
     private String brandName;
     private String modelName;
     private String price;
@@ -18,11 +16,5 @@ public class UpdateSmartphoneRequest {
     private String cpu;
     private String numberOfCores;
     private String battery;
-    private String descriptionDetails;
-    private String screenDiagonal;
-    private String screenResolution;
-    private String screenRefreshRate;
-    private String pixelDensity;
-    private String screenType;
-    private String additionaly;
+    //resim , color , memory ve details optionlari yok.
 }
