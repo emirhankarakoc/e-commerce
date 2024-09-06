@@ -168,13 +168,18 @@ export default function ProductDetails() {
                 {product.colors.map((color) => (
                   <div
                     key={color.id}
-                    className={`w-8 h-8 rounded-full border border-gray-300 cursor-pointer ${selectedColor === color.code ? "border-black" : ""}`}
+                    className={`w-8 h-8 rounded-full cursor-pointer relative ${selectedColor === color.code ? "border-4 border-black" : "border border-gray-300"}`}
                     style={{ backgroundColor: color.code }}
                     onClick={() => handleColorSelect(color.code)}
                     aria-label={`Color: ${color.code}`}
-                  />
+                  >
+                    {selectedColor === color.code && (
+                      <div className="absolute inset-0 border-2 border-black rounded-full pointer-events-none"></div>
+                    )}
+                  </div>
                 ))}
               </div>
+
               {/* Bellek Seçenekleri */}
               <div className="col-span-12 mt-4">
                 {product.memoryOptions.map((memory) => (

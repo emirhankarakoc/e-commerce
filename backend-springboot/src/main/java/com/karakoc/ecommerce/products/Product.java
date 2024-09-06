@@ -23,11 +23,6 @@ public class Product {
     private List<Image> images;
 
     @OneToMany
-    @JoinColumn(name = "colorId")
-    private List<Color> colors;
-
-
-    @OneToMany
     @JoinColumn(name = "reviewId") // Corrected annotation
     private List<Review> reviews;
 }
