@@ -15,7 +15,5 @@ public class Color {
     @Id
     private String id;
     private String code;
-
-
     private String smartphoneId;
 }

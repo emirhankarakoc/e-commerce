@@ -28,19 +28,20 @@ public class Smartphone extends Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "colorId")
     private List<Color> colors;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "memoryId")
     private List<Memory> memoryOptions;
+
 
     @OneToOne
     @JoinColumn(name = "detailId")
     private Details details;
 
-    public static SmartphoneResponse smartphoneToResponse(Smartphone smartphone) {
+    public static SmartphoneResponse smartphoneToResponse(Smartphone smartphone,List<Color> colors) {
         SmartphoneResponse productResponse = new SmartphoneResponse();
         productResponse.setId(smartphone.getId());
         productResponse.setBrandName(smartphone.getBrandName());
@@ -56,17 +57,11 @@ public class Smartphone extends Product {
         productResponse.setFrontCameraProps(smartphone.getFrontCameraProps());
         productResponse.setMainCameraProps(smartphone.getMainCameraProps());
         productResponse.setGuaranteeOption(smartphone.getGuaranteeOption());
-        productResponse.setColors(smartphone.getColors());
         productResponse.setMemoryOptions(smartphone.getMemoryOptions());
+        productResponse.setColors(colors);
         productResponse.setDetails(smartphone.getDetails());
         return productResponse;
     }
 
-    public static List<SmartphoneResponse> smartphoneResponseList(List<Smartphone> smartphones){
-        List<SmartphoneResponse> dtos = new ArrayList<>();
-        for (Smartphone smartphone : smartphones) {
-            dtos.add(smartphoneToResponse(smartphone));
-        }
-        return dtos;
-    }
+
 }

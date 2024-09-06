@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.karakoc.ecommerce.smartphones.Smartphone.smartphoneResponseList;
 import static com.karakoc.ecommerce.smartphones.Smartphone.smartphoneToResponse;
 
 @Service
@@ -212,7 +211,10 @@ public class SmartphoneManager implements SmartphoneService{
     @Override
     public SmartphoneResponse getSmartphone(String id) {
         Smartphone smartphone = smartphoneRepository.findById(id).orElseThrow(()-> new NotfoundException("Smartphone not found."));
-      return smartphoneToResponse(smartphone);
+        List<Color> colors = colorRepository.findAllBySmartphoneId(smartphone.getId());
+
+
+      return smartphoneToResponse(smartphone,colors);
     }
 
 
@@ -220,7 +222,7 @@ public class SmartphoneManager implements SmartphoneService{
     public String deleteSmartphone(String id) throws IOException {
         Smartphone smartphone = smartphoneRepository.findById(id).orElseThrow(()->new NotfoundException("Smartphone not found."));
         List<Image> images = smartphone.getImages();
-        List<Color> colors = smartphone.getColors();
+        List<Color> colors = colorRepository.findAllBySmartphoneId(smartphone.getId());
         List<Memory> memoryOptions = smartphone.getMemoryOptions();
         List<Review> reviews = smartphone.getReviews();
 
@@ -236,6 +238,7 @@ public class SmartphoneManager implements SmartphoneService{
     @Override
     public List<SmartphoneResponse> getAllSmartphones() {
         List<Smartphone> smartphones = smartphoneRepository.findAll();
+
         List<SmartphoneResponse> responseList = smartphoneResponseList(smartphones);
         return responseList;
     }
@@ -267,4 +270,12 @@ private void deleteAllImages(List<Image> images) throws IOException {
         }
         imageRepository.deleteAll(images);
 }
+    private List<SmartphoneResponse> smartphoneResponseList(List<Smartphone> smartphones){
+        List<SmartphoneResponse> dtos = new ArrayList<>();
+        for (Smartphone smartphone : smartphones) {
+            List<Color> colors = colorRepository.findAllBySmartphoneId(smartphone.getId());
+            dtos.add(smartphoneToResponse(smartphone,colors));
+        }
+        return dtos;
+    }
 }
