@@ -29,7 +29,7 @@ public class CartController {
         return cartService.removeFromCart(userPrincipal.getUserId(), id);
     }
 
-    @GetMapping
+    @GetMapping("/myCart")
     public Cart getCart(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         UserDTO user = userService.getUserById(userPrincipal.getUserId());
         return user.getCart();

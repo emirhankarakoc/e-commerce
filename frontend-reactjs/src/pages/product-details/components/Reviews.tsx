@@ -1,24 +1,35 @@
-import { APIURL, httpError } from "@/assets/http";
+import { APIURL, http, httpError } from "@/assets/http";
+import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const Reviews: React.FC<{ reviews: any[] | null }> = ({ reviews }) => {
+const Reviews = () => {
   const { id } = useParams();
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [ratingCounts, setRatingCounts] = useState<number[]>(Array(5).fill(0));
   const [averageRating, setAverageRating] = useState<number>(0);
   const [comment, setComment] = useState<string>("");
   const [rating, setRating] = useState<number>(0);
-  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(true);
 
-  // Fallback to empty array if reviews is null or undefined
-  const reviewList = reviews || [];
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await http.get(`${APIURL}/reviews/${id}`);
+        setReviews(response.data);
+      } catch (error) {
+        httpError(error);
+      }
+    };
+
+    fetchReviews();
+  }, [id]);
 
   useEffect(() => {
     const calculateRatingCounts = () => {
       const counts = Array(5).fill(0);
       let totalRating = 0;
 
-      reviewList.forEach((review) => {
+      reviews.forEach((review) => {
         if (review.point >= 1 && review.point <= 5) {
           counts[review.point - 1] += 1;
           totalRating += review.point;
@@ -27,17 +38,17 @@ const Reviews: React.FC<{ reviews: any[] | null }> = ({ reviews }) => {
 
       setRatingCounts(counts.reverse()); // Ters sırada göstermek için ters çevir
 
-      if (reviewList.length > 0) {
-        setAverageRating(totalRating / reviewList.length);
+      if (reviews.length > 0) {
+        setAverageRating(totalRating / reviews.length);
       } else {
         setAverageRating(0);
       }
     };
 
     calculateRatingCounts();
-  }, [reviewList]);
+  }, [reviews]);
 
-  const totalReviews = reviewList.length;
+  const totalReviews = reviews.length;
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -52,7 +63,6 @@ const Reviews: React.FC<{ reviews: any[] | null }> = ({ reviews }) => {
 
     if (!jwtToken) {
       alert("Please log in first.");
-      setUserLoggedIn(false);
       return;
     }
 
@@ -61,15 +71,13 @@ const Reviews: React.FC<{ reviews: any[] | null }> = ({ reviews }) => {
       return;
     }
 
-    // Define the request payload
     const requestBody = {
-      smartphoneId: id, // You may want to replace this with dynamic data
+      smartphoneId: id,
       content: comment,
       point: rating,
     };
 
     try {
-      // Make the API call
       const response = await fetch(`${APIURL}/reviews`, {
         method: "POST",
         headers: {
@@ -80,22 +88,23 @@ const Reviews: React.FC<{ reviews: any[] | null }> = ({ reviews }) => {
       });
 
       if (!response.ok) {
-        // Handle non-2xx HTTP responses
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const result = await response.json();
-      console.log("Success:", result);
-      window.location.href = window.location.href;
+      alert("Your review was submitted successfully.");
 
-      // Show success alert and reset form
-      alert(`Comment: ${comment}\nRating: ${rating}`);
+      // Refresh reviews after submission
+      const updatedResponse = await http.get(`${APIURL}/reviews/${id}`);
+      setReviews(updatedResponse.data);
+
+      // Scroll to the reviews section
+      window.location.hash = "#reviews";
+
+      // Reset form
       setComment("");
       setRating(0);
-      setUserLoggedIn(true);
     } catch (error) {
-      // Handle any errors
-      httpError(error); // You may have your own error handling logic
+      httpError(error);
       console.error("Error submitting review:", error);
     }
   };
@@ -120,7 +129,7 @@ const Reviews: React.FC<{ reviews: any[] | null }> = ({ reviews }) => {
           <div className="col-span-4">
             <div className="space-y-2">
               {ratingCounts.map((count, index) => {
-                const starRating = 5 - index; // Yıldız rating'i 5'ten başlar
+                const starRating = 5 - index;
                 const percentage =
                   totalReviews === 0 ? 0 : (count / totalReviews) * 100;
                 return (
@@ -166,15 +175,16 @@ const Reviews: React.FC<{ reviews: any[] | null }> = ({ reviews }) => {
           placeholder="Write your comment here..."
         />
 
-        <button
+        <Button
           onClick={handleSubmit}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+          color="primary"
+          className=" text-white px-4 py-2 rounded-lg"
         >
           Submit
-        </button>
+        </Button>
       </div>
-      {reviewList.length > 0 ? (
-        reviewList.map((review) => (
+      {reviews.length > 0 ? (
+        reviews.map((review) => (
           <div key={review.id} className="bg-gray-100 p-4 mb-4 rounded-lg">
             <div className="flex items-start space-x-4">
               <img
@@ -182,7 +192,7 @@ const Reviews: React.FC<{ reviews: any[] | null }> = ({ reviews }) => {
                   review.userProfilePictureImageUrl ||
                   "https://via.placeholder.com/48"
                 }
-                alt={review.userFullname || "Anonymous"}
+                alt={review.userFullname || "none"}
                 className="w-12 h-12 rounded-full object-cover"
               />
               <div className="flex-1">

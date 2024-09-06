@@ -5,9 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class CreateSmartphoneRequest {
-    private MultipartFile[] multipartFiles; // Birden fazla dosya için dizi
-    private String[] colorNames;
-    private String[] memoryOptions;
+    private MultipartFile[] multipartFiles;
+    private String colorNames;
+    private String memoryOptions;
     private String brandName;
     private String modelName;
     private String price;

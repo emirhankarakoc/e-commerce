@@ -11,8 +11,7 @@ import java.time.LocalDateTime;
 public class Order {
     @Id
     private String id;
-    private String productId;
-    private String userId;
+
     private LocalDateTime date;
 
 

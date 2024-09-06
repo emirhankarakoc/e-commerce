@@ -40,6 +40,7 @@ public class AdminController {
     }
 
 
+
     @GetMapping("/users")
     public List<UserDTO> getAllUsers(){
         return userService.getAllUsers();

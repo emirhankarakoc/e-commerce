@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 
 function Products() {
   const [products, setProducts] = useState<Product[] | null>(null);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [filteredProducts, setFilteredProducts] = useState<Product[] | null>(
     null
   );
@@ -61,6 +62,7 @@ function Products() {
   };
 
   const handleDeleteProduct = async (id: string) => {
+    setLoading(true);
     const jwtToken = localStorage.getItem("jwtToken");
     try {
       await http.delete(`/admins/smartphones/${id}`, {
@@ -73,6 +75,7 @@ function Products() {
     } catch (error) {
       httpError(error);
     }
+    setLoading(false);
   };
 
   if (products === null) {
@@ -87,7 +90,7 @@ function Products() {
 
   return (
     <div>
-      <div className="p-10">
+      <div className="p-10" id="loadingbar">
         <Input
           isClearable
           placeholder="Search products..."
@@ -96,6 +99,14 @@ function Products() {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
+
+      {isLoading && (
+        <div className="grid place-items-center">
+          <CircularProgress color="secondary" size="lg" />
+          <div>Please wait.</div>
+        </div>
+      )}
+
       <div>
         {filteredProducts && filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
@@ -120,13 +131,20 @@ function Products() {
                   <div className="col-span-4 flex items-center">
                     <Button
                       color="warning"
-                      onClick={() => handleUpdateProduct(product.id)}
+                      onClick={() => {
+                        handleUpdateProduct(product.id);
+                        setUpdateMenuActive(!isUpdateMenuActive);
+                      }}
                     >
                       <i className="fa-solid fa-pen-to-square fa-xl"></i>
                     </Button>
                     <Button
                       color="danger"
-                      onClick={() => handleDeleteProduct(product.id)}
+                      onClick={() => {
+                        window.location.href = "#loadingbar";
+
+                        handleDeleteProduct(product.id);
+                      }}
                       className="ml-4"
                     >
                       <i className="fa-solid fa-trash fa-xl"></i>
@@ -134,18 +152,20 @@ function Products() {
                   </div>
                 </div>
               </CardBody>
+              {isUpdateMenuActive && selectedProductId && (
+                <UpdateProduct
+                  product1={
+                    products.find((p) => p.id === selectedProductId) || {}
+                  }
+                  setState={setUpdateMenuActive}
+                />
+              )}
             </Card>
           ))
         ) : (
           <div className="p-10 text-center">No products found</div>
         )}
       </div>
-      {isUpdateMenuActive && selectedProductId && (
-        <UpdateProduct
-          product1={products.find((p) => p.id === selectedProductId) || {}}
-          setState={setUpdateMenuActive}
-        />
-      )}
     </div>
   );
 }

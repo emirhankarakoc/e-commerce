@@ -2,7 +2,7 @@ import { EyeFilledIcon } from "@/assets/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "@/assets/EyeSlashFilledIcon";
 import { APIURL, http } from "@/assets/http";
 import { MailIcon } from "@/assets/MailIcon";
-import { Button, Checkbox, Input } from "@nextui-org/react";
+import { Button, Card, CardBody, Checkbox, Input } from "@nextui-org/react";
 import { useState } from "react";
 
 interface Message {

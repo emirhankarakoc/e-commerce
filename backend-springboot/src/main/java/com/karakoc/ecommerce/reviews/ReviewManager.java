@@ -41,6 +41,12 @@ public class ReviewManager implements ReviewService{
 
     }
 
+    @Override
+    public List<Review> getSmartphoneReviews(String id) {
+        Smartphone smartphone = smartphoneRepository.findById(id).orElseThrow(()-> new NotfoundException("Smartphone not found"));
+        return smartphone.getReviews();
+    }
+
     public double calculateRating(String smartphoneId){
         Smartphone smartphone = smartphoneRepository.findById(smartphoneId).orElseThrow(()-> new NotfoundException("Smartphone not found"));
         List<Review> reviews = reviewRepository.findAllBySmartphoneId(smartphoneId);

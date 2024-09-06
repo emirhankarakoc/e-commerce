@@ -43,11 +43,16 @@ public class SmartphoneManager implements SmartphoneService{
 
     private final MemoryRepository memoryRepository;
 
-
+    private List<String> splitDataFromFrontend(String colors){
+        colors = colors.substring(1, colors.length()-1);
+        String[] colorArray = colors.split(",");
+        return List.of(colorArray);
+    }
     @Override
     @Transactional
     public Smartphone createSmartphone(CreateSmartphoneRequest request) {
-
+        List<String> colorCodes = splitDataFromFrontend(request.getColorNames());
+        List<String> memories = splitDataFromFrontend(request.getMemoryOptions());
         Smartphone smartphone = new Smartphone();
         smartphone.setId(UUID.randomUUID().toString());
         smartphone.setBrandName(request.getBrandName());
@@ -68,13 +73,13 @@ public class SmartphoneManager implements SmartphoneService{
         smartphone.setReviews(new ArrayList<>());
         smartphone.setImages(new ArrayList<>());
 
-        for (String colorName: request.getColorNames()){
+        for (String colorName: colorCodes){
            Color color = createColor(colorName);
            smartphone.getColors().add(color);
         }
 
 
-        for (String memoryValues: request.getMemoryOptions()){
+        for (String memoryValues: memories){
             Memory memory = createMemory(memoryValues);
             smartphone.getMemoryOptions().add(memory);
         }
@@ -161,7 +166,7 @@ public class SmartphoneManager implements SmartphoneService{
     public String deleteSmartphone(String id) throws IOException {
         Smartphone smartphone = smartphoneRepository.findById(id).orElseThrow(()->new NotfoundException("Smartphone not found."));
         List<Image> images = smartphone.getImages();
-        List<Color> colors = colorRepository.findAllBySmartphoneId(smartphone.getId());
+        List<Color> colors = smartphone.getColors();
         List<Memory> memoryOptions = smartphone.getMemoryOptions();
         List<Review> reviews = smartphone.getReviews();
 

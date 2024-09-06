@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Users from "./components/Users";
 import Products from "./components/Products";
 import Orders from "./components/Orders";
+import AddProduct from "../addProduct/AddProduct";
 
 export default function Admin() {
   const [isAdmin, setAdmin] = useState(false);
@@ -13,6 +14,8 @@ export default function Admin() {
   const [isProductsComponentActive, setProductsComponentActive] =
     useState(false);
   const [isOrdersComponentActive, setOrdersComponentActive] = useState(false);
+  const [isAddProductComponentActive, setAddProductComponentActive] =
+    useState(false);
 
   useEffect(() => {
     const handleGetMe = async () => {
@@ -32,21 +35,33 @@ export default function Admin() {
   }, []);
 
   const handleUser = () => {
+    setAddProductComponentActive(false);
+
     setUsersComponentActive(true);
     setProductsComponentActive(false);
     setOrdersComponentActive(false);
   };
 
   const handleProducts = () => {
+    setAddProductComponentActive(false);
     setUsersComponentActive(false);
     setProductsComponentActive(true);
     setOrdersComponentActive(false);
   };
 
   const handleOrders = () => {
+    setAddProductComponentActive(false);
+
     setUsersComponentActive(false);
     setProductsComponentActive(false);
     setOrdersComponentActive(true);
+  };
+  const handleAddProduct = () => {
+    setAddProductComponentActive(true);
+
+    setUsersComponentActive(false);
+    setProductsComponentActive(false);
+    setOrdersComponentActive(false);
   };
 
   if (!isAdmin) {
@@ -73,6 +88,9 @@ export default function Admin() {
           <Button color="success" onClick={handleProducts}>
             Products
           </Button>
+          <Button onClick={handleAddProduct} color="secondary">
+            Add Product
+          </Button>
           <Button color="warning" onClick={handleOrders}>
             Orders
           </Button>
@@ -81,6 +99,7 @@ export default function Admin() {
           {isUsersComponentActive && <Users />}
           {isProductsComponentActive && <Products />}
           {isOrdersComponentActive && <Orders />}
+          {isAddProductComponentActive && <AddProduct />}
         </div>
       </div>
 

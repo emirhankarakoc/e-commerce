@@ -72,3 +72,18 @@ interface FiltersProps {
   onMemoryChange: (values: Set<string>) => void;
   onColorChange: (values: Set<string>) => void;
 }
+
+interface Cart {
+  id: string;
+  summary: string;
+  items: CartItems[];
+}
+interface CartItems {
+  id: string;
+  cartId: string;
+  productId: string;
+  productName: string;
+  productImage: string;
+  productPrice: string;
+  extras: string;
+}

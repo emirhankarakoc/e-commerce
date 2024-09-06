@@ -201,14 +201,15 @@ const Smartphones: React.FC = () => {
                   />
                   <p className="text-xl mt-3 font-sfpro">{product.modelName}</p>
                   <p className="mb-3 font-bold">{product.price}</p>
-                  <button
+                  <Button
+                    color="primary"
                     onClick={() => {
                       window.location.href = "/smartphones/" + product.id;
                     }}
-                    className="px-12 bg-black rounded-md text-white py-4"
+                    className="px-12 bg-black rounded-md text-white py-4 mx-3"
                   >
                     Buy Now
-                  </button>
+                  </Button>
                 </div>
               ))
             ) : (

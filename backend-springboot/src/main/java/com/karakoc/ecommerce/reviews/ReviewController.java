@@ -6,10 +6,9 @@ import com.karakoc.ecommerce.reviews.requests.CreateReviewRequest;
 import com.karakoc.ecommerce.security.UserPrincipal;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/reviews")
@@ -21,6 +20,11 @@ public class ReviewController {
     public Review postReview(@AuthenticationPrincipal UserPrincipal principal, @RequestBody CreateReviewRequest request) {
         controlReview(request);
         return reviewService.createReview(principal.getUserId(),request);
+    }
+
+    @GetMapping("/{productId}")
+    public List<Review> getSmartphoneReviews(@PathVariable String productId) {
+        return reviewService.getSmartphoneReviews(productId);
     }
 
 

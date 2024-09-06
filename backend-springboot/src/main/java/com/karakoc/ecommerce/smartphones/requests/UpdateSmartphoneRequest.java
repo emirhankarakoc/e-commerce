@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class UpdateSmartphoneRequest {
+    private String smartphoneId;
     private String brandName;
     private String modelName;
     private String price;

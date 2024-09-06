@@ -2,7 +2,14 @@ import { EyeFilledIcon } from "@/assets/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "@/assets/EyeSlashFilledIcon";
 import { APIURL, http } from "@/assets/http";
 import { MailIcon } from "@/assets/MailIcon";
-import { Button, Input } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Input,
+} from "@nextui-org/react";
 import { useState } from "react";
 
 interface Message {
@@ -11,29 +18,22 @@ interface Message {
 }
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [message, setMessage] = useState<Message | null>(null);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("asdasd");
+    e.preventDefault();
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+    setLoading(true);
 
-  const handleLoginButton = async () => {
     try {
-      setLoading(true);
-      const response = await http.post(`${APIURL}/accounts/login`, {
-        email,
-        password,
-      });
+      const response = await http.post(`${APIURL}/accounts/login`, data);
 
       const jwt = response.data.accessToken;
       const userId = response.data.id;
@@ -51,74 +51,71 @@ export default function Login() {
         message: `Login failed. ${error.response.data.message}`,
         color: "red",
       });
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
-
   return (
-    <div className="bg-gradient-to-r from-blue-200 to-pink-200">
-      <div className="flex items-center justify-center flex-col h-screen">
-        <div className="bg-slate-200 p-4 rounded-3xl">
+    <div className="h-screen bg-gradient-to-r from-blue-200 to-pink-200 grid place-items-center">
+      <Card className="max-w-xl w-full ">
+        <CardHeader className="justify-center ">
           <div className="font-semibold text-2xl my-1 grid place-items-center">
             Log In 👋
           </div>
-
-          <div id="email-ve-password-yeri">
-            <div className="my-3 w-96" id="email">
-              <Input
-                endContent={
-                  <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                }
-                value={email}
-                onChange={handleEmailChange}
-                type="email"
-                label="Email"
-                placeholder="Enter your email"
-              />
-            </div>
-            <div className="my-3 w-96" id="password">
-              <Input
-                label="Password"
-                placeholder="Enter your password"
-                endContent={
-                  <button
-                    type="button"
-                    onClick={toggleVisibility}
-                    aria-label="toggle password visibility"
-                  >
-                    {isVisible ? (
-                      <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                    ) : (
-                      <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                    )}
-                  </button>
-                }
-                type={isVisible ? "text" : "password"}
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </div>
-          </div>
-          <div id="loginbutonu" className="grid place-items-center">
+        </CardHeader>
+        <CardBody>
+          <form onSubmit={handleSubmit} className="grid gap-3">
+            <Input
+              name="email"
+              endContent={
+                <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+              }
+              type="text"
+              label="Email"
+              placeholder="Enter your email"
+            />
+            <Input
+              name="password"
+              label="Password"
+              placeholder="Enter your password"
+              endContent={
+                <button
+                  type="button"
+                  onClick={toggleVisibility}
+                  aria-label="toggle password visibility"
+                >
+                  {isVisible ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+              type={isVisible ? "text" : "password"}
+            />
             <Button
+              type="submit"
+              fullWidth
               isLoading={isLoading}
-              className="w-96"
-              onPress={handleLoginButton}
               color="success"
             >
               Log In!
             </Button>
-          </div>
-        </div>
-        <div
-          className="p-4 rounded-3xl my-3 text-white text-sm font-poppins"
-          style={{ backgroundColor: message?.color || "transparent" }}
-          id="alttaki-response-yeri"
-        >
-          {message?.message}
-        </div>
-      </div>
+          </form>
+        </CardBody>
+        {message && (
+          <CardFooter className="w-full">
+            <div className="flex w-full justify-center">
+              <div
+                className="p-4 rounded-3xl my-3 text-white text-sm font-poppins"
+                style={{ backgroundColor: message?.color || "transparent" }}
+                id="alttaki-response-yeri"
+              >
+                {message?.message}
+              </div>
+            </div>
+          </CardFooter>
+        )}
+      </Card>
     </div>
   );
 }

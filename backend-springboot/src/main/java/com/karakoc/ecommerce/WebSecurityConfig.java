@@ -55,6 +55,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/accounts/**").permitAll() //login - register endpoints
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/products/**").permitAll()
+                        .requestMatchers("/cart/**").permitAll()
+                        //cart, admin ve userli olmali
                         .requestMatchers("/admins/**").hasAnyRole("ADMIN")
                         .requestMatchers("/reviews/**").permitAll()
                         .requestMatchers("/smartphones/**").permitAll()

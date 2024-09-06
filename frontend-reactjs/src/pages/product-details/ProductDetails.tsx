@@ -314,21 +314,23 @@ export default function ProductDetails() {
               <div className="col-span-12">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="mt-4">
-                    <button
+                    <Button
                       onClick={handleWishlist}
-                      className="w-full border-2 border-black py-3 rounded-lg hover:bg-gray-100 "
+                      variant="bordered"
+                      color="primary"
+                      className="w-full border-2 border-black text-black py-3 rounded-lg"
                     >
                       Add To Wishlist
-                    </button>
+                    </Button>
                   </div>
                   <div className="mt-4">
-                    <button
+                    <Button
                       onClick={handlePurchase}
                       color="primary"
-                      className="w-full bg-black py-3 rounded-lg hover:bg-gray-800 text-white"
+                      className="w-full bg-black py-3 rounded-lg  text-white"
                     >
                       Add To Cart
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -393,11 +395,10 @@ export default function ProductDetails() {
         <div className="bg-[#FAFAFA] p-20">
           <Details detaylar={product.details} />
         </div>
-        {product.reviews == null && (
-          <div className="bg-white p-20">
-            <Reviews reviews={product.reviews} />{" "}
-          </div>
-        )}
+
+        <div id="reviews" className="bg-white p-20">
+          <Reviews />
+        </div>
 
         <div>
           <Discounts />

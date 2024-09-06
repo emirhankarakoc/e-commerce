@@ -113,9 +113,15 @@ export default function Cart() {
         <div className="col-span-4">
           <h2 className="font-bold text-2xl font-sfpro"> Summary</h2>
           <p>Total: ${products.summary}</p>
-          <button className=" bg-black hover:bg-gray-700 px-16 py-4 w-full my-10 text-white font-sfpro rounded-lg">
+          <Button
+            color="primary"
+            className=" bg-black text-white px-16 py-4 w-full my-10 text-white font-sfpro rounded-lg"
+            onClick={() => {
+              window.location.href = "/checkout";
+            }}
+          >
             Checkout
-          </button>
+          </Button>
         </div>
       </div>
       <div>
