@@ -5,8 +5,7 @@
 - Java Development Kit 17 (JDK 17) [click here for download](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) (I strongly recommend MSI Installers if you use Windows)
 - Any code editor which I recommend  [vscode](https://code.visualstudio.com/download) for frontend, [intelij idea](https://www.jetbrains.com/idea/)
  for backend 
- - Mysql 8 [download link](https://dev.mysql.com/downloads/installer/)
- - Mysql Workbench (or another db connector) [download link](https://dev.mysql.com/downloads/workbench/)
+
 ### Control Environment Is Ready or Not
 - for nodejs, just type `node -v` to cmd or shell
 - for jdk, just type `java -version` to cmd or shell
@@ -18,7 +17,9 @@ As you see, there is two folders. One of them is backend called `backend-springb
 <br> Choose a folder and open it then `right click menu - open with VSCode/Intellij Idea`.
 
 ### If you chosen backend we are one more step far from starting the server
-- Database Setup
+#### Database Setup
+- Mysql 8 [download link](https://dev.mysql.com/downloads/installer/)
+- Mysql Workbench (or another db connector) [download link](https://dev.mysql.com/downloads/workbench/)
 #
 Install mysql, install workbench and change my username and password with yours in `src > main > resources > applcation.properties` file
 ## Server installation finished.
