@@ -2,8 +2,11 @@ package com.karakoc.ecommerce.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.karakoc.ecommerce.carts.Cart;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -22,6 +25,10 @@ public class User {
     private String profilePhotoPath;
     private String fullName;
 
+    @OneToOne
+    @JoinColumn(name = "cartId")
+    private Cart cart;
+
 
 
     public static UserDTO userToDTO(User user){
@@ -29,6 +36,9 @@ public class User {
                 .id(user.getId())
                 .email(user.getEmail())
                 .role(user.getRole())
+                .cart(user.getCart())
+                .profilePhotoPath(user.getProfilePhotoPath())
+                .fullName(user.getFullName())
                 .build();
         return dto;
     }

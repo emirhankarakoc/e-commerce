@@ -195,7 +195,7 @@ const Smartphones: React.FC = () => {
                     <i className="fa-regular fa-heart"></i>
                   </button>
                   <img
-                    src={product.imageLinks[0]?.imageUrl}
+                    src={product.images[0]?.imageUrl}
                     alt={product.modelName}
                     className="w-[120px] h-[160px]"
                   />

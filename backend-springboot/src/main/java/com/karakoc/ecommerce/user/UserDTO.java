@@ -1,5 +1,6 @@
 package com.karakoc.ecommerce.user;
 
+import com.karakoc.ecommerce.carts.Cart;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,6 +10,8 @@ public class UserDTO {
     private String id;
     private String email;
     private String role;
-    private String extraInfo;
+    private String fullName;
     private double balance;
+    private String profilePhotoPath;
+    private Cart cart;
 }

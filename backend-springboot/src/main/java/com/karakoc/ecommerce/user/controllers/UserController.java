@@ -1,4 +1,4 @@
-package com.karakoc.ecommerce.controllers;
+package com.karakoc.ecommerce.user.controllers;
 
 import com.karakoc.ecommerce.user.UserDTO;
 import com.karakoc.ecommerce.user.UserService;
@@ -21,6 +21,7 @@ public class UserController {
     public UserDTO getUserById(@PathVariable String id){
         return userService.getUserById(id);
     }
+
 
     //create user method must not be here.
     //must be in Account Controller.

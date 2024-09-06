@@ -2,7 +2,7 @@ import { APIURL, httpError } from "@/assets/http";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const Reviews: React.FC<{ reviews: any[] }> = ({ reviews }) => {
+const Reviews: React.FC<{ reviews: any[] | null }> = ({ reviews }) => {
   const { id } = useParams();
   const [ratingCounts, setRatingCounts] = useState<number[]>(Array(5).fill(0));
   const [averageRating, setAverageRating] = useState<number>(0);
@@ -10,12 +10,15 @@ const Reviews: React.FC<{ reviews: any[] }> = ({ reviews }) => {
   const [rating, setRating] = useState<number>(0);
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(true);
 
+  // Fallback to empty array if reviews is null or undefined
+  const reviewList = reviews || [];
+
   useEffect(() => {
     const calculateRatingCounts = () => {
       const counts = Array(5).fill(0);
       let totalRating = 0;
 
-      reviews.forEach((review) => {
+      reviewList.forEach((review) => {
         if (review.point >= 1 && review.point <= 5) {
           counts[review.point - 1] += 1;
           totalRating += review.point;
@@ -24,17 +27,17 @@ const Reviews: React.FC<{ reviews: any[] }> = ({ reviews }) => {
 
       setRatingCounts(counts.reverse()); // Ters sırada göstermek için ters çevir
 
-      if (reviews.length > 0) {
-        setAverageRating(totalRating / reviews.length);
+      if (reviewList.length > 0) {
+        setAverageRating(totalRating / reviewList.length);
       } else {
         setAverageRating(0);
       }
     };
 
     calculateRatingCounts();
-  }, [reviews]);
+  }, [reviewList]);
 
-  const totalReviews = reviews.length;
+  const totalReviews = reviewList.length;
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -170,13 +173,16 @@ const Reviews: React.FC<{ reviews: any[] }> = ({ reviews }) => {
           Submit
         </button>
       </div>
-      {reviews.length > 0 ? (
-        reviews.map((review) => (
+      {reviewList.length > 0 ? (
+        reviewList.map((review) => (
           <div key={review.id} className="bg-gray-100 p-4 mb-4 rounded-lg">
             <div className="flex items-start space-x-4">
               <img
-                src={review.userProfilePictureImageUrl}
-                alt={review.userFullname}
+                src={
+                  review.userProfilePictureImageUrl ||
+                  "https://via.placeholder.com/48"
+                }
+                alt={review.userFullname || "Anonymous"}
                 className="w-12 h-12 rounded-full object-cover"
               />
               <div className="flex-1">

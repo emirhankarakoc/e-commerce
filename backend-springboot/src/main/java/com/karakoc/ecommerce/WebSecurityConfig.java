@@ -55,7 +55,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/accounts/**").permitAll() //login - register endpoints
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/products/**").permitAll()
-                        .requestMatchers("/admins/**").permitAll()
+                        .requestMatchers("/admins/**").hasAnyRole("ADMIN")
                         .requestMatchers("/reviews/**").permitAll()
                         .requestMatchers("/smartphones/**").permitAll()
                         .anyRequest().authenticated()

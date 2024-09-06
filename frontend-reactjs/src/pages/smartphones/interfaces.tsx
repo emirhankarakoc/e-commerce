@@ -4,26 +4,15 @@ interface ImageLink {
 
 interface Details {
   id: string;
-  descriptionDetails: string;
+  descriptionDetails: string | null;
   screenDiagonal: string;
   screenResolution: string;
   screenRefreshRate: string;
   pixelDensity: string;
   screenType: string;
   additionaly: string;
-  smartphoneId: string;
 }
-interface DetailsProp {
-  id: string;
-  descriptionDetails: string;
-  screenDiagonal: string;
-  screenResolution: string;
-  screenRefreshRate: string;
-  pixelDensity: string;
-  screenType: string;
-  additionaly: string;
-  smartphoneId: string;
-}
+
 interface Review {
   id: string;
   smartphoneId: string;
@@ -33,10 +22,6 @@ interface Review {
   content: string;
   point: number;
   date: string;
-}
-
-interface ReviewsProps {
-  reviews: Review[];
 }
 
 interface Memory {
@@ -55,15 +40,18 @@ interface Product {
   modelName: string;
   price: string;
   oldPrice: string;
-  imageLinks: ImageLink[];
+  images: ImageLink[];
   reviews: Review[];
   cpu: string;
   numberOfCores: string;
   memoryOptions: Memory[];
-  colors: Color[]; // Updated to include colors
+  colors: Color[];
   battery: string;
   screenSize: string;
   description: string;
+  frontCameraProps: string;
+  mainCameraProps: string;
+  guaranteeOption: string;
   details: Details;
 }
 
@@ -78,9 +66,9 @@ interface FiltersProps {
   brands: string[];
   batteries: string[];
   memories: string[];
-  colors: string[]; // Added colors
+  colors: string[];
   onBrandChange: (values: Set<string>) => void;
   onBatteryChange: (values: Set<string>) => void;
   onMemoryChange: (values: Set<string>) => void;
-  onColorChange: (values: Set<string>) => void; // Added colors
+  onColorChange: (values: Set<string>) => void;
 }

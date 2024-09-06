@@ -24,8 +24,8 @@ export default function ProductDetails() {
         const data = response.data;
         console.log("Fetched Product Data:", data);
         setProduct(data);
-        if (data.imageLinks && data.imageLinks.length > 0) {
-          setMainImage(data.imageLinks[0].imageUrl); // Başlangıçta ilk resmi ana resim olarak ayarla
+        if (data.images && data.images.length > 0) {
+          setMainImage(data.images[0].imageUrl); // Başlangıçta ilk resmi ana resim olarak ayarla
         }
       } catch (error) {
         httpError(error);
@@ -44,19 +44,33 @@ export default function ProductDetails() {
   };
 
   const handlePurchase = async () => {
+    const jwtToken = localStorage.getItem("jwtToken");
+
+    if (!jwtToken) {
+      alert("Please log in first.");
+      return;
+    }
+
     if (!selectedColor || !selectedMemory) {
       alert("Please select both color and memory.");
       return;
     }
 
-    try {
-      console.log({
-        productId: id,
-        color: selectedColor,
-        memory: selectedMemory,
-      });
+    const requestBody = {
+      productId: id,
+      productColor: selectedColor,
+      productMemory: selectedMemory,
+    };
 
-      alert(`Added to cart ! ${id} ${selectedColor} ${selectedMemory}`);
+    try {
+      // Make the API call
+      await http.post(`${APIURL}/cart`, requestBody, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+      alert("Item added to cart successfully.!");
     } catch (error) {
       httpError(error);
     }
@@ -118,7 +132,7 @@ export default function ProductDetails() {
                 />
               </div>
               <div className="w-20 flex flex-col space-y-2">
-                {product.imageLinks.map((image, index) => (
+                {product.images.map((image, index) => (
                   <img
                     key={index}
                     src={image.imageUrl}
@@ -225,7 +239,7 @@ export default function ProductDetails() {
                         Number of Cores
                       </div>
                       <div className="text-[#4E4E4E] font-sfpro">
-                        {product.numCores}
+                        {product.numberOfCores}
                       </div>
                     </div>
                   </div>
@@ -244,7 +258,7 @@ export default function ProductDetails() {
                         Main Camera
                       </div>
                       <div className="text-[#4E4E4E] font-sfpro">
-                        {product.mainCamera}
+                        {product.mainCameraProps}
                       </div>
                     </div>
                   </div>
@@ -263,7 +277,7 @@ export default function ProductDetails() {
                         Front Camera
                       </div>
                       <div className="text-[#4E4E4E] font-sfpro">
-                        {product.frontCamera}
+                        {product.frontCameraProps}
                       </div>
                     </div>
                   </div>
@@ -282,7 +296,7 @@ export default function ProductDetails() {
                         Battery Capacity
                       </div>
                       <div className="text-[#4E4E4E] font-sfpro">
-                        {product.batteryCapacity}
+                        {product.battery}
                       </div>
                     </div>
                   </div>
@@ -360,7 +374,9 @@ export default function ProductDetails() {
                       <div className="text-[#b6b6b6] font-sfpro">
                         Guaranteed
                       </div>
-                      <div className="text-[#4E4E4E] font-sfpro">1 year</div>
+                      <div className="text-[#4E4E4E] font-sfpro">
+                        {product.guaranteeOption}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -372,9 +388,12 @@ export default function ProductDetails() {
         <div className="bg-[#FAFAFA] p-20">
           <Details detaylar={product.details} />
         </div>
-        <div className="bg-white p-20">
-          <Reviews reviews={product.reviews} />{" "}
-        </div>
+        {product.reviews == null && (
+          <div className="bg-white p-20">
+            <Reviews reviews={product.reviews} />{" "}
+          </div>
+        )}
+
         <div>
           <Discounts />
         </div>

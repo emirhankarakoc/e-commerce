@@ -1,4 +1,4 @@
-package com.karakoc.ecommerce.controllers;
+package com.karakoc.ecommerce.user.controllers;
 
 
 import org.springframework.web.bind.annotation.GetMapping;

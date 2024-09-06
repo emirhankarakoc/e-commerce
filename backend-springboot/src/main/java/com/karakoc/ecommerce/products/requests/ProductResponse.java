@@ -15,8 +15,9 @@ public class ProductResponse {
     private String price;
     private String oldPrice;
     private List<Color> colors;
-    private List<ImageDTO> imageLinks;
+    private List<ImageDTO> images;
     private List<Review> reviews;
+
 
 
 

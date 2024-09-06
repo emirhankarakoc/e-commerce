@@ -71,6 +71,11 @@ export default function Navigation() {
       {isLoggedIn && (
         <NavbarContent justify="end">
           <NavbarItem className="hidden lg:flex">
+            <Button as={Link} to="/cart" color="secondary" variant="flat">
+              <i className="fa-solid fa-cart-shopping fa-2xl"></i>
+            </Button>
+          </NavbarItem>
+          <NavbarItem className="hidden lg:flex">
             <Button as={Link} to="/profile" color="secondary" variant="flat">
               Profile
             </Button>

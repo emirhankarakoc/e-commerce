@@ -1,17 +1,10 @@
 import { APIURL, http } from "@/assets/http";
 import Navigation from "@/components/Navigation";
+import { Button } from "@nextui-org/button";
 import React, { useEffect, useState } from "react";
 
 export default function Profile() {
-  // Define a type for user state
-  type User = {
-    id: string;
-    email: string;
-    role: string;
-  } | null;
-
-  // Initialize state as User or null
-  const [user, setUser] = useState<User>(null);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const handleGetMe = async () => {
@@ -21,7 +14,6 @@ export default function Profile() {
         setUser(response.data);
       } catch (error) {
         console.log(error);
-        setUser(null); // Correctly set state to null on error
       }
     };
 
@@ -48,11 +40,21 @@ export default function Profile() {
               <div className="font-semibold">
                 Also saved JWT token to header in http.tsx
               </div>
+              {user.role === "ROLE_ADMIN" && (
+                <Button
+                  onClick={() => {
+                    window.location.href = "/admin";
+                  }}
+                  color="danger"
+                >
+                  ADMIN MENU
+                </Button>
+              )}
             </div>
           </div>
         ) : (
           <div className="grid place-items-center h-screen ">
-            <p className="font-semibold">Login first</p>
+            <p className="font-semibold font-sfpro">Login first</p>
           </div>
         )}
       </div>

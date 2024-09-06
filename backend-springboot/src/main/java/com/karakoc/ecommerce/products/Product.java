@@ -28,6 +28,6 @@ public class Product {
 
 
     @OneToMany
-    @JoinColumn(name = "review_id") // Corrected annotation
+    @JoinColumn(name = "reviewId") // Corrected annotation
     private List<Review> reviews;
 }
