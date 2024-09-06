@@ -13,7 +13,7 @@
 - if everything is fine, lets start with downloading repo.
 [click here for download](https://github.com/emirhankarakoc/e-commerce/archive/refs/heads/main.zip)
 
-### After downloading, unzip the repo and open folder. 
+### After downloading, unzip the repo and open it. 
 As you see, there is two folders. One of them is backend called `backend-springboot` other one is frontend called `frontend-reactjs` (simple)
 <br> Choose a folder and open it then `right click menu - open with VSCode/Intellij Idea`.
 
