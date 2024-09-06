@@ -22,8 +22,11 @@ As you see, there is two folders. One of them is backend called `backend-springb
 #
 Install mysql, install workbench and change my username and password with yours in `src > main > resources > applcation.properties` file
 ## Server installation finished.
-![image](https://github.com/user-attachments/assets/e13cb511-f42a-4b4f-9752-855ae691d136)
+![image](https://github.com/user-attachments/assets/e13cb511-f42a-4b4f-9752-855ae691d136)<br>
 As you see, server just started.
+<br> 
+### Server Port
+If you dont change from `application.properties`, port will be :8080 (if there is empty)
 
 
 ## Frontend start
