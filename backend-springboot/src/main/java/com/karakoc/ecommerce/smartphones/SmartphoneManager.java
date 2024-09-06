@@ -153,7 +153,7 @@ public class SmartphoneManager implements SmartphoneService{
     @Override
     public Smartphone getSmartphone(String id) {
         Smartphone smartphone = smartphoneRepository.findById(id).orElseThrow(()-> new NotfoundException("Smartphone not found."));
-
+        return smartphone;
     }
 
 
@@ -210,21 +210,10 @@ public class SmartphoneManager implements SmartphoneService{
 
 }
 
-
-
-
 private void deleteAllImages(List<Image> images) throws IOException {
         for (Image image : images){
             cloudinaryService.delete(image.getCloudImageId());
         }
         imageRepository.deleteAll(images);
 }
-    private List<SmartphoneResponse> smartphoneResponseList(List<Smartphone> smartphones){
-        List<SmartphoneResponse> dtos = new ArrayList<>();
-        for (Smartphone smartphone : smartphones) {
-            List<Color> colors = colorRepository.findAllBySmartphoneId(smartphone.getId());
-            dtos.add(smartphoneToResponse(smartphone,colors));
-        }
-        return dtos;
-    }
 }
