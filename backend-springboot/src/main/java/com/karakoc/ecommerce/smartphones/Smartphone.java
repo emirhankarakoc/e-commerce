@@ -26,13 +26,14 @@ public class Smartphone extends Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "colorId")
     private List<Color> colors;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "memoryId")
     private List<Memory> memoryOptions;
+
 
     @OneToOne
     @JoinColumn(name = "detailId")

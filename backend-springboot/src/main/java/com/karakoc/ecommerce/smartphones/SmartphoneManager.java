@@ -153,7 +153,7 @@ public class SmartphoneManager implements SmartphoneService{
     @Override
     public Smartphone getSmartphone(String id) {
         Smartphone smartphone = smartphoneRepository.findById(id).orElseThrow(()-> new NotfoundException("Smartphone not found."));
-      return smartphone;
+
     }
 
 
@@ -161,7 +161,7 @@ public class SmartphoneManager implements SmartphoneService{
     public String deleteSmartphone(String id) throws IOException {
         Smartphone smartphone = smartphoneRepository.findById(id).orElseThrow(()->new NotfoundException("Smartphone not found."));
         List<Image> images = smartphone.getImages();
-        List<Color> colors = smartphone.getColors();
+        List<Color> colors = colorRepository.findAllBySmartphoneId(smartphone.getId());
         List<Memory> memoryOptions = smartphone.getMemoryOptions();
         List<Review> reviews = smartphone.getReviews();
 
@@ -178,6 +178,7 @@ public class SmartphoneManager implements SmartphoneService{
     public List<Smartphone> getAllSmartphones() {
         List<Smartphone> smartphones = smartphoneRepository.findAll();
         return smartphones;
+
     }
 
     private Color createColor(String colorHexCode) {
@@ -218,4 +219,12 @@ private void deleteAllImages(List<Image> images) throws IOException {
         }
         imageRepository.deleteAll(images);
 }
+    private List<SmartphoneResponse> smartphoneResponseList(List<Smartphone> smartphones){
+        List<SmartphoneResponse> dtos = new ArrayList<>();
+        for (Smartphone smartphone : smartphones) {
+            List<Color> colors = colorRepository.findAllBySmartphoneId(smartphone.getId());
+            dtos.add(smartphoneToResponse(smartphone,colors));
+        }
+        return dtos;
+    }
 }
