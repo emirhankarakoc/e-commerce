@@ -37,7 +37,7 @@ If you dont change from `application.properties`, port will be :8080 (if there i
 After opened, just open the terminal with 
 - ctrl + shift + \` (last character below the esc button)
 
-### Starting with node_modules, open terminal and type
+### Starting with install required folders, open terminal and type
 
 - npm install
 - npm run dev
