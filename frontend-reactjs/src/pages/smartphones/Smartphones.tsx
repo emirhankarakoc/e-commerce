@@ -113,11 +113,11 @@ const Smartphones: React.FC = () => {
     switch (sortCriteria) {
       case "Ascending":
         return (
-          parseFloat(a.price.slice(0, -1)) - parseFloat(b.price.slice(0, -1))
+          parseFloat(a.price.slice(1, -1)) - parseFloat(b.price.slice(1, -1))
         );
       case "Descending":
         return (
-          parseFloat(b.price.slice(0, -1)) - parseFloat(a.price.slice(0, -1))
+          parseFloat(b.price.slice(1, -1)) - parseFloat(a.price.slice(1, -1))
         );
       case "Rating":
         const avgRatingA = calculateAverageRating(a.reviews);
@@ -199,7 +199,11 @@ const Smartphones: React.FC = () => {
                     alt={product.modelName}
                     className="w-[120px] h-[160px]"
                   />
-                  <p className="text-xl mt-3 font-sfpro">{product.modelName}</p>
+                  <p className="text-2xl  font-sfpro">{product.brandName}</p>
+
+                  <p className="text-xl font-bold mt-3 font-sfpro">
+                    {product.modelName}
+                  </p>
                   <p className="mb-3 font-bold">{product.price}</p>
                   <Button
                     color="primary"

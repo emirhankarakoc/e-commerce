@@ -92,7 +92,7 @@ export default function Cart() {
                   </div>
                   <div className="col-span-3 grid place-items-center">
                     <h4 className="text-xl font-sfpro font-bold">
-                      ${item.productPrice}
+                      {item.productPrice}
                     </h4>
                   </div>
                   <div className="col-span-3 grid place-items-center">
