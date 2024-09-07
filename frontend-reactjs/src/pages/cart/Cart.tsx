@@ -12,7 +12,7 @@ export default function Cart() {
 
     const fetchCart = async () => {
       try {
-        const response = await http.get("/cart", {
+        const response = await http.get("/cart/myCart", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwtToken}`,

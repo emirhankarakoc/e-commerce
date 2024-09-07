@@ -10,7 +10,7 @@ export default function Checkout() {
     const fetchMyCart = async () => {
       try {
         const jwtToken = localStorage.getItem("jwtToken");
-        const response = await http.get("/myCart", {
+        const response = await http.get("/cart/myCart", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwtToken}`,
