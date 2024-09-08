@@ -25,7 +25,7 @@ public class CartController {
 
 
     @DeleteMapping("/{id}")
-    public Cart deleteItemFromCart(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable String id) {
+    public Cart deleteItemFromCart(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable String id)  {
         return cartService.removeFromCart(userPrincipal.getUserId(), id);
     }
 

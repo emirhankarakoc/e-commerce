@@ -19,7 +19,7 @@ public interface UserService {
     UserDTO createUser(String email, String password);
     UserDTO getUserByEmail(String email);
     UserDTO getUserById(String id);
-    String deleteUser(String id);
+    String deleteUser(String id) throws IOException;
     User changeUserDetails(String userId,UpdateUserDetailsRequest r);
     Address getAdress(String userId, String adressId);
     User changeProfilePicture(MultipartFile picture ,String userId) throws IOException;

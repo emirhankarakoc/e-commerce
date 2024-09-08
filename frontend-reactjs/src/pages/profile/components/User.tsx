@@ -3,6 +3,8 @@ import { Button, Input } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 function User() {
+  const [isLoading, setLoading] = useState<boolean>();
+  const [selectedButtonName, setSelectedButtonName] = useState<string>();
   const [user, setUser] = useState<User>();
   const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -30,6 +32,8 @@ function User() {
   };
 
   const handleFileUpload = async () => {
+    setLoading(true);
+    setSelectedButtonName("Upload Photo");
     if (!selectedFile) {
       console.log("No file selected.");
       return;
@@ -50,9 +54,12 @@ function User() {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const handleSave = async () => {
+    setLoading(true);
+    setSelectedButtonName("Save Changes");
     const updatedUser = {
       fullName,
       email,
@@ -70,13 +77,15 @@ function User() {
     } catch (error) {
       console.log(error);
     }
+
+    setLoading(false);
   };
 
   return (
-    <div className="border-2 border-green-500">
+    <div className="border-2 border-green-500 m-5 rounded-2xl">
       <h1 className="p-5 text-3xl font-bold font-sfpro">Profile</h1>
 
-      <div className="p-32">
+      <div className="p-14">
         <div className="grid grid-cols-3 gap-4">
           <div className="col-span-1 flex flex-col items-center">
             <h1 className="text-3xl font-bold font-sfpro mb-4">Photo</h1>
@@ -96,7 +105,11 @@ function User() {
               aria-label="Upload Profile Photo"
               className="mb-4"
             />
-            <Button onClick={handleFileUpload} color="primary">
+            <Button
+              isLoading={isLoading && selectedButtonName === "Upload Photo"}
+              onClick={handleFileUpload}
+              color="success"
+            >
               Upload Photo
             </Button>
           </div>
@@ -124,7 +137,11 @@ function User() {
                 placeholder="Enter your email"
               />
             </div>
-            <Button onClick={handleSave} color="primary">
+            <Button
+              isLoading={isLoading && selectedButtonName === "Save Changes"}
+              onClick={handleSave}
+              color="success"
+            >
               Save Changes
             </Button>
           </div>

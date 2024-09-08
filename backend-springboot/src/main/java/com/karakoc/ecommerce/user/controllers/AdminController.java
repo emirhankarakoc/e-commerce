@@ -53,7 +53,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable String  id) {
+    public String deleteUser(@PathVariable String  id) throws IOException {
         return userService.deleteUser(id);
     }
 

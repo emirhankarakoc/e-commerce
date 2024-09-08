@@ -78,7 +78,6 @@ export default function Admin() {
 
   return (
     <div>
-      <Navigation />
       <div className="p-10 m-20 bg-[#F6F6F6] rounded-xl ">
         <div className="flex flex-row gap-10 ">
           <h1 className="text-3xl font-sfpro font-bold">Admin Menu</h1>
@@ -102,8 +101,6 @@ export default function Admin() {
           {isAddProductComponentActive && <AddProduct />}
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

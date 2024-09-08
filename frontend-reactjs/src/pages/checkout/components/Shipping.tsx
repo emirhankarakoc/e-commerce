@@ -52,16 +52,7 @@ export default function Shipping({
       ) : (
         <div>
           <h1 className="text-4xl font-bold font-sfpro">Shipping Methods</h1>
-          {selectedMethodName && (
-            <div className="flex flex-row items-center justify-start gap-10">
-              <p>
-                Selected shipping method: <strong>{selectedMethodName}</strong>
-              </p>
-              <Button className="bg-black text-white" onClick={handleContinue}>
-                Continue
-              </Button>
-            </div>
-          )}
+
           {methods?.map((method) => (
             <div
               key={method.id}
@@ -72,17 +63,27 @@ export default function Shipping({
                 <p className="text-xl">{method.description}</p>
                 <h2 className="text-2xl font-bold">${method.cost}</h2>
               </div>
-              <div className="col-span-1 grid place-items-center">
+              <div className="col-span-1 flex flex-row ">
                 <Button
                   fullWidth
                   onClick={() => {
                     handleSelect(method.id);
                     setSelectedMethodName(method.name);
                   }}
-                  className="bg-black text-white"
+                  color={`${selectedMethodName === method.name ? "success" : "default"}`}
                 >
                   Select
                 </Button>
+                {selectedMethodName === method.name ? (
+                  <Button
+                    className="bg-black text-white"
+                    onClick={handleContinue}
+                  >
+                    Continue
+                  </Button>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           ))}

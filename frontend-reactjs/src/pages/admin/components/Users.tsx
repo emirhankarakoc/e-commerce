@@ -22,6 +22,8 @@ function Users() {
   );
   const [searchQuery, setSearchQuery] = useState("");
 
+  const [isLoading, setLoading] = useState<boolean>();
+
   useEffect(() => {
     const fetchUsers = async () => {
       const jwtToken = localStorage.getItem("jwtToken");
@@ -59,6 +61,7 @@ function Users() {
   };
 
   const handleConfirmDelete = async () => {
+    setLoading(true);
     if (selectedUserId) {
       try {
         const jwtToken = localStorage.getItem("jwtToken");
@@ -76,6 +79,7 @@ function Users() {
         setSelectedUserId(null);
       }
     }
+    setLoading(false);
   };
 
   const handleCloseModal = () => {
@@ -228,6 +232,7 @@ function Users() {
                 Are you sure you want to delete this user?
               </h3>
               <Button
+                isLoading={isLoading}
                 color="danger"
                 onClick={handleConfirmDelete}
                 className="text-white bg-red-600 hover:bg-red-800"

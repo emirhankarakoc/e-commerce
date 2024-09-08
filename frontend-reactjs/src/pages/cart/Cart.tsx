@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 
 export default function Cart() {
   const [products, setProducts] = useState<Cart | null>(null);
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [loadingId, setLoadingId] = useState<string | null>(null);
 
   useEffect(() => {
     const jwtToken = localStorage.getItem("jwtToken");
@@ -27,11 +29,14 @@ export default function Cart() {
     fetchCart();
   }, []);
   const handleRemoveFromCart = async (id: string) => {
+    setLoadingId(id);
+    setLoading(true);
+
     try {
       const jwtToken = localStorage.getItem("jwtToken");
 
       // API çağrısı yapmak
-      const response = await http.delete(`/cart/${id}`, {
+      const response = await http.delete(`/carts/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwtToken}`,
@@ -46,6 +51,7 @@ export default function Cart() {
     } catch (error) {
       httpError(error);
     }
+    setLoading(false);
   };
 
   if (products === null) {
@@ -65,65 +71,90 @@ export default function Cart() {
       <div>
         <Navigation />
       </div>
-      <div className="p-20 bg-[#F6F6F6] grid grid-cols-12">
-        {/* urunler kismi */}
-        <div className="col-span-8 ">
-          <h1 className="text-4xl font-bold font-sfpro m-5 ">Shopping Cart</h1>
-          {products?.items.map((item, index) => (
-            <Card shadow="sm" isBlurred key={index} className="m-5">
-              <CardBody>
-                <div className="grid grid-cols-12 ">
-                  <div className="col-span-3 grid place-items-center ">
-                    <a href={"/smartphones/" + item.productId}>
-                      <img
-                        src={item.productImage}
-                        alt={item.productName}
-                        className="w-32 h-32"
-                      />
-                    </a>
-                  </div>
-                  <div className="col-span-3 grid place-items-center">
-                    <a href={"/smartphones/" + item.productId}>
+      {products.summary == "0" ? (
+        <div className="grid place-items-center h-[500px]">
+          <div>
+            <p className="text-3xl font-bold font-sfpro">
+              There is nothing in cart.
+            </p>
+            <Button
+              onClick={() => {
+                window.location.href = "/smartphones";
+              }}
+              fullWidth
+              className="bg-black text-white"
+            >
+              Start Shopping
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="p-20 bg-[#F6F6F6] grid grid-cols-12">
+          {/* urunler kismi */}
+          <div className="col-span-8 ">
+            <h1 className="text-4xl font-bold font-sfpro m-5 ">
+              Shopping Cart
+            </h1>
+            {products?.items.map((item, index) => (
+              <Card shadow="sm" isBlurred key={index} className="m-5">
+                <CardBody>
+                  <div className="grid grid-cols-12 ">
+                    <div className="col-span-3 grid place-items-center ">
+                      <a href={"/smartphones/" + item.productId}>
+                        <img
+                          src={item.productImage}
+                          alt={item.productName}
+                          className="w-32 h-32"
+                        />
+                      </a>
+                    </div>
+                    <div className="col-span-3 grid place-items-center">
+                      <a href={"/smartphones/" + item.productId}>
+                        <h4 className="text-xl font-sfpro font-bold">
+                          {item.productName}
+                        </h4>
+                        <p>{item.extras}</p>
+                      </a>
+                    </div>
+                    <div className="col-span-3 grid place-items-center">
                       <h4 className="text-xl font-sfpro font-bold">
-                        {item.productName}
+                        {item.productPrice}
                       </h4>
-                      <p>{item.extras}</p>
-                    </a>
+                    </div>
+                    <div className="col-span-3 grid place-items-center">
+                      <Button
+                        isLoading={isLoading && item.id === loadingId}
+                        color="danger"
+                        size="md"
+                        onClick={() => {
+                          handleRemoveFromCart(item.id);
+                        }}
+                      >
+                        Remove from Cart
+                      </Button>
+                    </div>
                   </div>
-                  <div className="col-span-3 grid place-items-center">
-                    <h4 className="text-xl font-sfpro font-bold">
-                      {item.productPrice}
-                    </h4>
-                  </div>
-                  <div className="col-span-3 grid place-items-center">
-                    <Button
-                      color="danger"
-                      size="md"
-                      onClick={() => handleRemoveFromCart(item.id)}
-                    >
-                      Remove from Cart
-                    </Button>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-          ))}
+                </CardBody>
+              </Card>
+            ))}
+          </div>
+          {/* summary */}
+          <div className="col-span-4">
+            <h2 className="font-bold text-2xl font-sfpro"> Summary</h2>
+            <p>Total: ${products.summary}</p>
+            <Button
+              color="primary"
+              className=" bg-black text-white px-16 py-4 w-full my-10 text-white font-sfpro rounded-lg"
+              onClick={() => {
+                window.location.href = "/checkout";
+              }}
+            >
+              Checkout
+            </Button>
+          </div>
         </div>
-        {/* summary */}
-        <div className="col-span-4">
-          <h2 className="font-bold text-2xl font-sfpro"> Summary</h2>
-          <p>Total: ${products.summary}</p>
-          <Button
-            color="primary"
-            className=" bg-black text-white px-16 py-4 w-full my-10 text-white font-sfpro rounded-lg"
-            onClick={() => {
-              window.location.href = "/checkout";
-            }}
-          >
-            Checkout
-          </Button>
-        </div>
-      </div>
+      )}
+
       <div>
         <Footer />
       </div>

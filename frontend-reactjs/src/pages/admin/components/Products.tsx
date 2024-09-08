@@ -100,13 +100,6 @@ function Products() {
         />
       </div>
 
-      {isLoading && (
-        <div className="grid place-items-center">
-          <CircularProgress color="secondary" size="lg" />
-          <div>Please wait.</div>
-        </div>
-      )}
-
       <div>
         {filteredProducts && filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
@@ -139,6 +132,7 @@ function Products() {
                       <i className="fa-solid fa-pen-to-square fa-xl"></i>
                     </Button>
                     <Button
+                      isLoading={isLoading}
                       color="danger"
                       onClick={() => {
                         window.location.href = "#loadingbar";

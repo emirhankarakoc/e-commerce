@@ -351,6 +351,7 @@ function Content() {
               />
             </div>
             <Button
+              isLoading={isLoading}
               fullWidth
               onClick={handleSubmit}
               color="success"
@@ -358,11 +359,7 @@ function Content() {
             >
               Submit
             </Button>
-            {isLoading && (
-              <div className="mt-4 text-center">
-                <CircularProgress size="lg" />
-              </div>
-            )}
+
             {responseMessage && (
               <div>
                 <div className="mt-4 text-center">{responseMessage}</div>

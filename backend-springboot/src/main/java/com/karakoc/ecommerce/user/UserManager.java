@@ -105,13 +105,16 @@ public class UserManager implements UserService{
 
     @Override
     @Transactional
-    public String deleteUser(String id){
+    public String deleteUser(String id) throws IOException {
         User user = repository.findById(id).orElseThrow(()-> new NotfoundException(messages.getUSER_NOT_FOUND_404()));
+        String imageCloudId= user.getProfilePhotoCloudId();
+        imageRepository.deleteById(user.getImageId());
         Cart cart = user.getCart();
         List<CartItem> items = cart.getItems();
         cartItemRepository.deleteAll(items);
         cartRepository.delete(user.getCart());
         repository.delete(user);
+        cloudinaryService.delete(imageCloudId);
         return "An user deleted with given email adress:" + user.getEmail();
     }
 
@@ -137,9 +140,10 @@ public class UserManager implements UserService{
                 throw new BadRequestException("Empty file.");
             }
             if (user.getProfilePhotoPath()!=null) {
-                cloudinaryService.delete(user.getProfilePhotoCloudId());
                 Image image = imageRepository.findById(user.getImageId()).orElseThrow(()-> new NotfoundException("Image not found."));
                 imageRepository.delete(image);
+                cloudinaryService.delete(user.getProfilePhotoCloudId());
+
             }
 
 
@@ -151,6 +155,7 @@ public class UserManager implements UserService{
             smartphoneImage.setProductType(null);
             smartphoneImage.setName((String) uploadResult.get("original_filename"));
             imageRepository.save(smartphoneImage);
+            user.setImageId(smartphoneImage.getId());
             user.setProfilePhotoPath(smartphoneImage.getImageUrl());
             user.setProfilePhotoCloudId(smartphoneImage.getCloudImageId());
             userRepository.save(user);

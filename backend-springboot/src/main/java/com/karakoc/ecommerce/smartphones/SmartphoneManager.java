@@ -1,6 +1,9 @@
 package com.karakoc.ecommerce.smartphones;
 
 
+import com.karakoc.ecommerce.carts.Cart;
+import com.karakoc.ecommerce.carts.CartRepository;
+import com.karakoc.ecommerce.carts.item.CartItem;
 import com.karakoc.ecommerce.reviews.Review;
 import com.karakoc.ecommerce.smartphones.colors.Color;
 import com.karakoc.ecommerce.cloudinary.entity.Image;
@@ -42,6 +45,7 @@ public class SmartphoneManager implements SmartphoneService{
     private final ReviewRepository reviewRepository;
 
     private final MemoryRepository memoryRepository;
+    private final CartRepository cartRepository;
 
     private List<String> splitDataFromFrontend(String colors){
         colors = colors.substring(1, colors.length()-1);
@@ -162,9 +166,22 @@ public class SmartphoneManager implements SmartphoneService{
     }
 
 
-    @Override
     public String deleteSmartphone(String id) throws IOException {
-        Smartphone smartphone = smartphoneRepository.findById(id).orElseThrow(()->new NotfoundException("Smartphone not found."));
+        // Ürünü bul
+        Smartphone smartphone = smartphoneRepository.findById(id).orElseThrow(() -> new NotfoundException("Smartphone not found."));
+
+        // Ürünü sepetlerde bul
+        List<Cart> cartsIncludeThisSmartphone = cartRepository.findCartsByProductId(id);
+
+        // Sepetlerde ürünü kaldır
+        for (Cart cart : cartsIncludeThisSmartphone) {
+            cart.getItems().removeIf(item -> item.getProductId().equals(id));
+            // Sepet güncellemeleri ve özet hesaplamaları
+            cart.setSummary(calculateCartSummary(cart.getItems()));
+            cartRepository.save(cart);
+        }
+
+        // Diğer temizlik işlemleri
         List<Image> images = smartphone.getImages();
         List<Color> colors = smartphone.getColors();
         List<Memory> memoryOptions = smartphone.getMemoryOptions();
@@ -174,10 +191,19 @@ public class SmartphoneManager implements SmartphoneService{
         colorRepository.deleteAll(colors);
         memoryRepository.deleteAll(memoryOptions);
         reviewRepository.deleteAll(reviews);
-        smartphoneRepository.delete(smartphone);
-        return "Smartphone successfully deleted.";
 
+        // Ürünü sil
+        smartphoneRepository.delete(smartphone);
+
+        return "Smartphone successfully deleted.";
     }
+
+    private double calculateCartSummary(List<CartItem> items) {
+        return items.stream()
+                .mapToDouble(item -> Double.parseDouble(item.getProductPrice())) // Convert price string to double
+                .sum();
+    }
+
 
     @Override
     public List<Smartphone> getAllSmartphones() {

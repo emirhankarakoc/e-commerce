@@ -67,7 +67,8 @@ public class CartManager implements CartService{
 
         cart.getItems().remove(item);
         double summary = cart.getSummary();
-        cart.setSummary(summary- Double.parseDouble(item.getProductPrice()));
+        String newPriceWithoutDollarSymbol = item.getProductPrice().substring(1);
+        cart.setSummary(summary- Double.parseDouble(newPriceWithoutDollarSymbol));
         userRepository.save(buyer);
         cartItemRepository.delete(item);
         return buyer.getCart();

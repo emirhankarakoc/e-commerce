@@ -19,9 +19,8 @@ interface AdressProps {
 }
 
 export default function Adress({ propAdressId, setActiveState }: AdressProps) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   const [isLoading, setLoading] = useState(false);
+  const [selectedAdressId, setSelectedAdressId] = useState<string>();
   const [selectedAdressName, setSelectedAdressName] = useState<string>();
 
   const [adresses, setAdresses] = useState<Address[]>([]);
@@ -52,33 +51,10 @@ export default function Adress({ propAdressId, setActiveState }: AdressProps) {
     fetchMyAddress();
   }, []);
 
-  const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
-    setNewAddress({
-      ...newAddress,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async () => {
-    setLoading(true);
-    const jwtToken = localStorage.getItem("jwtToken");
-    await http.post(`${APIURL}/users/addresses`, newAddress, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwtToken}`,
-      },
-    });
-    setLoading(false);
-    onClose(); // Modal'ı kapat
-    window.location.href = window.location.href;
-  };
   const handleContinue = () => {
     setActiveState("Shipping"); // veya bir sonraki adımın ismi neyse onu kullanın
   };
-  const handleDeleteConfirm = () => {
-    console.log("SILINDI");
-  };
+
   return (
     <div className="p-20 px-40">
       <div className="flex justify-between">
@@ -93,16 +69,6 @@ export default function Adress({ propAdressId, setActiveState }: AdressProps) {
           Update Adresses
         </Button>
       </div>
-      {selectedAdressName && (
-        <div className="flex flex-row items-center gap-10">
-          <div>Selected Adress: {selectedAdressName}</div>
-          <div>
-            <Button className="bg-black text-white" onClick={handleContinue}>
-              Continue
-            </Button>
-          </div>
-        </div>
-      )}
 
       {adresses.length === 0 ? (
         <div className="mt-4">
@@ -141,6 +107,7 @@ export default function Adress({ propAdressId, setActiveState }: AdressProps) {
                     onClick={() => {
                       propAdressId(adress.id);
                       setSelectedAdressName(adress.title);
+                      setSelectedAdressId(adress.id);
                     }}
                     className={` mx-5
                      ${adress.title === selectedAdressName ? "bg-green-400 text-white" : "bg-gray-300 text-black"}
@@ -151,6 +118,19 @@ export default function Adress({ propAdressId, setActiveState }: AdressProps) {
                       ? "Selected"
                       : "Select"}
                   </Button>
+
+                  {selectedAdressId === adress.id ? (
+                    <div>
+                      <Button
+                        className="bg-black text-white"
+                        onClick={handleContinue}
+                      >
+                        Continue
+                      </Button>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
                 </div>
               </div>
             </div>
@@ -160,6 +140,7 @@ export default function Adress({ propAdressId, setActiveState }: AdressProps) {
             onClick={() => {
               window.location.href = "/";
             }}
+            variant="ghost"
             className="bg-black text-white"
           >
             Can't find? Click here.
