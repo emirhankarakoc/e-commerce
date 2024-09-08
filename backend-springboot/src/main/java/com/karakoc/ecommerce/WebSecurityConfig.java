@@ -55,8 +55,11 @@ public class WebSecurityConfig {
                         .requestMatchers("/accounts/**").permitAll() //login - register endpoints
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/products/**").permitAll()
-                        .requestMatchers("/cart/**").permitAll()
+                        .requestMatchers("/carts/**").permitAll()
+
                         //cart, admin ve userli olmali
+                        .requestMatchers("/shippingmethods/**").permitAll()
+                        .requestMatchers("/users/addresses/**").permitAll()
                         .requestMatchers("/admins/**").hasAnyRole("ADMIN")
                         .requestMatchers("/reviews/**").permitAll()
                         .requestMatchers("/smartphones/**").permitAll()

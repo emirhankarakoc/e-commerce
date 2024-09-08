@@ -17,11 +17,14 @@ function App() {
       <Route path="/smartphones/:id" element={<ProductDetails />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
+
       <Route path="/admin" element={<Admin />} />
       <Route path="/admin/addproduct" element={<AddProduct />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/profile/:menu" element={<Profile />} />
+
       {/* <Route path="/profile/:id" element={<Profile />} /> */}
     </Routes>
   );

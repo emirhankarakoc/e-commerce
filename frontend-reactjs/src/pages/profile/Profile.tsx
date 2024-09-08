@@ -1,63 +1,45 @@
-import { APIURL, http } from "@/assets/http";
 import Navigation from "@/components/Navigation";
-import { Button } from "@nextui-org/button";
-import React, { useEffect, useState } from "react";
+import { Button } from "@nextui-org/react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import User from "./components/User";
+import Addresses from "./components/Adresses";
 
 export default function Profile() {
-  const [user, setUser] = useState<User>();
+  const { menu } = useParams();
+  const [activeComponent, setActiveComponent] = useState<string>("user");
 
   useEffect(() => {
-    const handleGetMe = async () => {
-      try {
-        const response = await http.get(`${APIURL}/accounts/getme`);
-        console.log(response.data);
-        setUser(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    setActiveComponent(menu || "user");
+  }, [menu]);
 
-    handleGetMe();
-  }, []);
+  const handleOpenUserComponent = () => setActiveComponent("user");
+  const handleOpenAddressesComponent = () => setActiveComponent("addresses");
+  const handleOpenOrdersComponent = () => setActiveComponent("orders");
 
   return (
     <div>
+      <Navigation />
       <div>
-        <Navigation />
-      </div>
-      <div>
-        {user ? (
-          <div className="grid place-items-center h-screen ">
-            <div className="">
-              <div className="font-semibold">User Information</div>
-              <p></p>
-              UserId: {user.id} --saved to localstorage
-              <p></p>
-              Email: {user.email}
-              <p></p>
-              Role: {user.role}
-              <p></p>
-              <div className="font-semibold">
-                Also saved JWT token to header in http.tsx
-              </div>
-              {user.role === "ROLE_ADMIN" && (
-                <Button
-                  onClick={() => {
-                    window.location.href = "/admin";
-                  }}
-                  color="danger"
-                >
-                  ADMIN MENU
-                </Button>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="grid place-items-center h-screen ">
-            <p className="font-semibold font-sfpro">Login first</p>
-          </div>
-        )}
+        <div className="justify-between flex mx-32 py-10 border-gray-400  border-1 px-10 rounded-3xl mb-10">
+          <Button onClick={handleOpenUserComponent} className="bg-green-400">
+            User
+          </Button>
+          <Button onClick={handleOpenAddressesComponent} color="secondary">
+            Addresses
+          </Button>
+          <Button onClick={handleOpenOrdersComponent} color="primary">
+            Orders
+          </Button>
+        </div>
+        {activeComponent === "user" && <User />}
+        {activeComponent === "addresses" && <Addresses />}
+        {activeComponent === "orders" && <Orders />}
       </div>
     </div>
   );
+}
+
+function Orders() {
+  return <div>Orders</div>;
 }

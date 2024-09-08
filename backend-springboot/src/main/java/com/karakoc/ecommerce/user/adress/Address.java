@@ -1,4 +1,4 @@
-package com.karakoc.ecommerce.orders.adress;
+package com.karakoc.ecommerce.user.adress;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Adress {
+public class Address {
     @Id
     private String id;
     private String title;
@@ -15,5 +15,5 @@ public class Adress {
 
 
     @Column(columnDefinition = "TEXT")
-    private String fullAdress;
+    private String fullAddress;
 }

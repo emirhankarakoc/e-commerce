@@ -64,7 +64,7 @@ export default function ProductDetails() {
 
     try {
       // Make the API call
-      await http.post(`${APIURL}/cart`, requestBody, {
+      await http.post(`${APIURL}/carts`, requestBody, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwtToken}`,

@@ -87,3 +87,26 @@ interface CartItems {
   productPrice: string;
   extras: string;
 }
+
+interface Address {
+  id: string;
+  title: string;
+  phoneNumber: string;
+  fullAddress: string;
+}
+
+interface ShippingMethod {
+  id: string;
+  name: string;
+  description: string;
+  cost: string; //aslinda numara olmali ama neyse.
+}
+interface User {
+  id: string;
+  email: string;
+  role: string;
+  fullName: string;
+  balance: string;
+  profilePhotoPath: string;
+  cart: Cart;
+}

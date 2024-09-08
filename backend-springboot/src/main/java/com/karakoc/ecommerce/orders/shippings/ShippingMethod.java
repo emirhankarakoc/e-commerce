@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class ShippingMethods {
+public class ShippingMethod {
     @Id
     private String id;
     private String name;

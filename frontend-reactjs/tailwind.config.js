@@ -14,7 +14,11 @@ module.exports = {
       fontFamily: {
         poppins: "Poppins",
         oswald: "Oswald",
-        sfpro:"SF Pro Display"
+        sfpro: "SF Pro Display",
+      },
+      colors: {
+        black: "#000000",
+        white: "#FFFFFF",
       },
     },
   },
