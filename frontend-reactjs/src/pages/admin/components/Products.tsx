@@ -171,6 +171,7 @@ function UpdateProduct({
   product1: Product;
   setState: (active: boolean) => void;
 }) {
+  const [isLoading, setLoading] = useState<boolean>();
   const [modelName, setModelName] = useState(product1.modelName ?? "");
   const [brandName, setBrandName] = useState(product1.brandName ?? "");
   const [price, setPrice] = useState(product1.price ?? "");
@@ -206,10 +207,11 @@ function UpdateProduct({
     product1.details?.additionaly ?? ""
   );
   const handleUpdate = async () => {
+    setLoading(true);
     try {
       const jwtToken = localStorage.getItem("jwtToken");
       const response = await http.put(
-        `/admins/smartphone/${product1.id}`,
+        `/admins/smartphone/${product1.id}/basic`,
         {
           modelName,
           brandName,
@@ -233,6 +235,7 @@ function UpdateProduct({
     } catch (error) {
       console.error("Error updating product:", error);
     }
+    setLoading(false);
   };
 
   return (
@@ -310,7 +313,14 @@ function UpdateProduct({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <Button onClick={handleUpdate}>Update</Button>
+        <Button
+          color="success"
+          fullWidth
+          isLoading={isLoading}
+          onClick={handleUpdate}
+        >
+          Update
+        </Button>
       </div>
     </div>
   );

@@ -121,10 +121,10 @@ function Content() {
   };
 
   return (
-    <div className="bg-gray-300 p-20 m-20 rounded-lg">
-      <h2 className="font-bold font-sfpro text-4xl">Add Product Menu</h2>
+    <div className="rounded-lg border-3  border-red-500 my-10 p-5">
+      <h1 className="font-bold font-sfpro text-3xl my-5">Choose Category:</h1>
       {/* Product type buttons */}
-      <div className="flex flex-row gap-20 justify-center">
+      <div className="flex justify-between">
         <Button color="secondary" onClick={() => setProductType("smartphones")}>
           Smartphone
         </Button>

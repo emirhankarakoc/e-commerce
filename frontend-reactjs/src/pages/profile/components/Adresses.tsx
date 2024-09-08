@@ -189,11 +189,13 @@ export default function Addresses() {
               </Card>
             ))
           )}
-          <div className="grid place-items-center">
-            <Button className="bg-purple-500" onPress={onAddOpen}>
-              Add Another One
-            </Button>
-          </div>
+          {addresses?.length != 0 && (
+            <div className="grid place-items-center">
+              <Button className="bg-purple-500" onPress={onAddOpen}>
+                Add Another One
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Address Edit Form */}

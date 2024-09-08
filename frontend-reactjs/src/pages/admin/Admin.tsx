@@ -78,9 +78,12 @@ export default function Admin() {
 
   return (
     <div>
-      <div className="p-10 m-20 bg-[#F6F6F6] rounded-xl ">
-        <div className="flex flex-row gap-10 ">
-          <h1 className="text-3xl font-sfpro font-bold">Admin Menu</h1>
+      <h1 className=" grid place-items-center text-3xl font-sfpro font-bold ">
+        Admin Menu
+      </h1>
+
+      <div className="p-10  bg-[#F6F6F6]  border-3 mx-32 border-red-500 rounded-3xl">
+        <div className="flex justify-between   ">
           <Button color="primary" onClick={handleUser}>
             Users
           </Button>
@@ -94,12 +97,12 @@ export default function Admin() {
             Orders
           </Button>
         </div>
-        <div>
-          {isUsersComponentActive && <Users />}
-          {isProductsComponentActive && <Products />}
-          {isOrdersComponentActive && <Orders />}
-          {isAddProductComponentActive && <AddProduct />}
-        </div>
+      </div>
+      <div className="mx-32">
+        {isUsersComponentActive && <Users />}
+        {isProductsComponentActive && <Products />}
+        {isOrdersComponentActive && <Orders />}
+        {isAddProductComponentActive && <AddProduct />}
       </div>
     </div>
   );

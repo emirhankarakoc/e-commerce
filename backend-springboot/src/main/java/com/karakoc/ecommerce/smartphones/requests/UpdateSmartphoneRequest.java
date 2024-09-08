@@ -17,5 +17,5 @@ public class UpdateSmartphoneRequest {
     private String cpu;
     private String numberOfCores;
     private String battery;
-    //resim , color , memory ve details optionlari yok.
+    //resim yok sadece.
 }
