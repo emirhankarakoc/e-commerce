@@ -75,7 +75,7 @@ export default function Adress({ propAdressId, setActiveState }: AdressProps) {
           <div>No addresses available, why don't you add?</div>
           <Button
             onClick={() => {
-              window.location.href = "/";
+              window.location.href = "/profile/addresses";
             }}
           >
             Click me for manage your adresses.

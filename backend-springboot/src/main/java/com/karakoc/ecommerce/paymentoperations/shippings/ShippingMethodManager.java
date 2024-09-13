@@ -1,8 +1,7 @@
-package com.karakoc.ecommerce.orders.shippings;
+package com.karakoc.ecommerce.paymentoperations.shippings;
 
 import com.karakoc.ecommerce.exceptions.general.NotfoundException;
-import com.karakoc.ecommerce.orders.shippings.requests.CreateShippingMethod;
-import com.sun.security.auth.UnixNumericUserPrincipal;
+import com.karakoc.ecommerce.paymentoperations.shippings.requests.CreateShippingMethod;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,12 @@
 import { http, httpError } from "@/assets/http";
 import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
+interface PaymentProps {
+  addressId: string;
+  shippingMethodId: string;
+}
 
 export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
   const [address, setAddress] = useState<Address>();
@@ -10,6 +16,9 @@ export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
   const [ownerName, setOwnerName] = useState("");
+  const [subtotal, setSubtotal] = useState<number>(0);
+
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     const jwtToken = localStorage.getItem("jwtToken");
@@ -57,7 +66,23 @@ export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
     fetchShipping();
     fetchCart();
   }, [addressId, shippingMethodId]);
+  // Separate useEffect to calculate subtotal when cart and shipping are available
+  useEffect(() => {
+    console.log(
+      cart?.summary + "cart summary" + "shopping cost" + shipping?.cost
+    );
 
+    if (cart && shipping) {
+      const cartSummary = parseFloat(cart.summary); // Remove the dollar sign and parse
+      const shippingCost = parseFloat(shipping.cost); // Remove the dollar sign and parse
+
+      const araba = cartSummary + 20 + shippingCost;
+      console.log(araba);
+      console.log(cartSummary + "cartsummary - shippingcost" + shippingCost);
+
+      setSubtotal(araba);
+    }
+  }, [cart, shipping]);
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "").substring(0, 16);
     let formattedValue = value.replace(/(.{4})/g, "$1 ").trim();
@@ -79,8 +104,26 @@ export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
     setOwnerName(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
+
+    try {
+      const data = await http.post("/orders", {
+        shippingTypeId: shippingMethodId,
+        addressId: addressId,
+        cardOwnerName: ownerName,
+        cardNumber: cardNumber,
+        expiration: expiryDate,
+        cvv: cvv,
+      });
+      const response = data.data;
+
+      toast.success(response);
+    } catch (err) {
+      httpError(err);
+    }
+
     console.log("Shipping Method ID:", shippingMethodId);
     console.log("Address ID:", addressId);
     console.log("Cart Details:", cart);
@@ -88,6 +131,7 @@ export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
     console.log("Expiry Date:", expiryDate);
     console.log("CVV:", cvv);
     console.log("Card Owner's Name:", ownerName);
+    setLoading(false);
     //end
   };
 
@@ -163,7 +207,7 @@ export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
               <div className="flex justify-between items-center">
                 <div className="font-bold font-sfpro text-3xl">Subtotal:</div>
                 <div className="font-bold font-sfpro text-3xl text-right">
-                  ${cart?.summary}
+                  ${subtotal}
                 </div>
               </div>
             </div>
@@ -283,6 +327,7 @@ export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
                 </div>
 
                 <Button
+                  isLoading={isLoading}
                   type="submit"
                   className="w-full py-2 bg-[#000000] text-white rounded-lg"
                 >

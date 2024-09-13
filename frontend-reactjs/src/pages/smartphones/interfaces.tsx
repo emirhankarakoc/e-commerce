@@ -73,6 +73,33 @@ interface FiltersProps {
   onColorChange: (values: Set<string>) => void;
 }
 
+interface Order {
+  id: string;
+  userId: string;
+  smartphones: CartItem[];
+  shippingType: string;
+  adress: string;
+  cardOwnerName: string;
+  subtotal: string;
+  date: Date;
+  status: Status;
+  cardNumber: string;
+}
+enum Status {
+  PREPARING = "PREPARING",
+  SENT = "SENT",
+  FINISHED = "FINISHED",
+}
+
+interface CartItem {
+  id: string;
+  cartId: string;
+  productId: string;
+  productName: string;
+  productImage: string;
+  productPrice: string;
+  extras: string;
+}
 interface Cart {
   id: string;
   summary: string;

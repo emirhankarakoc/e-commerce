@@ -1,21 +1,16 @@
 package com.karakoc.ecommerce.user.controllers;
 
 
-import com.karakoc.ecommerce.cloudinary.entity.Image;
-import com.karakoc.ecommerce.orders.shippings.ShippingMethod;
-import com.karakoc.ecommerce.orders.shippings.ShippingMethodService;
-import com.karakoc.ecommerce.orders.shippings.requests.CreateShippingMethod;
-import com.karakoc.ecommerce.products.ProductType;
-import com.karakoc.ecommerce.security.UserPrincipal;
+import com.karakoc.ecommerce.paymentoperations.shippings.ShippingMethod;
+import com.karakoc.ecommerce.paymentoperations.shippings.ShippingMethodService;
+import com.karakoc.ecommerce.paymentoperations.shippings.requests.CreateShippingMethod;
 import com.karakoc.ecommerce.smartphones.Smartphone;
 import com.karakoc.ecommerce.smartphones.SmartphoneRepository;
 import com.karakoc.ecommerce.smartphones.SmartphoneService;
-import com.karakoc.ecommerce.smartphones.requests.CreateSmartphoneRequest;
 import com.karakoc.ecommerce.smartphones.requests.UpdateSmartphoneRequest;
 import com.karakoc.ecommerce.user.UserDTO;
 import com.karakoc.ecommerce.user.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;

@@ -27,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.*;
 
-import static com.karakoc.ecommerce.user.User.usersToDTOS;
 
 @Service
 @Slf4j
@@ -63,23 +62,23 @@ public class UserManager implements UserService{
         user.setEmail(email);
         user.setPassword(webSecurityConfig.passwordEncoder().encode(password));
         user.setRole(Roles.ROLE_USER.toString());
-        user.setCart(cart);
+        user.setCartId(cart.getId());
         user.setAddresses(new ArrayList<>());
 
 
-        return User.userToDTO(repository.save(user));
+        return userToDTO(repository.save(user));
     }
     @Override
     public UserDTO getUserByEmail(String email){
         User user = repository.findUserByEmail(email).orElseThrow(()-> new NotfoundException(messages.getUSER_NOT_FOUND_404()));
-        var dto = User.userToDTO(user);
+        var dto = userToDTO(user);
         return dto;
     }
 
     @Override
     public UserDTO getUserById(String id) {
         User user = repository.findById(id).orElseThrow(()-> new NotfoundException(messages.getUSER_NOT_FOUND_404()));
-        var dto = User.userToDTO(user);
+        var dto = userToDTO(user);
         return dto;
     }
 
@@ -109,10 +108,10 @@ public class UserManager implements UserService{
         User user = repository.findById(id).orElseThrow(()-> new NotfoundException(messages.getUSER_NOT_FOUND_404()));
         String imageCloudId= user.getProfilePhotoCloudId();
         imageRepository.deleteById(user.getImageId());
-        Cart cart = user.getCart();
+        Cart cart = cartRepository.findById(user.getCartId()).orElseThrow(()->new NotfoundException("Cart not found."));
         List<CartItem> items = cart.getItems();
         cartItemRepository.deleteAll(items);
-        cartRepository.delete(user.getCart());
+        cartRepository.delete(cart);
         repository.delete(user);
         cloudinaryService.delete(imageCloudId);
         return "An user deleted with given email adress:" + user.getEmail();
@@ -222,6 +221,25 @@ public class UserManager implements UserService{
         return user.getAddresses();
     }
 
+    public UserDTO userToDTO(User user){
+        Cart cart = cartRepository.findById(user.getCartId()).orElseThrow(()-> new NotfoundException("Cart not found."));
 
+        var dto = UserDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .cart(cart)
+                .profilePhotoPath(user.getProfilePhotoPath())
+                .fullName(user.getFullName())
+                .build();
+        return dto;
+    }
+    public List<UserDTO> usersToDTOS(List<User> userlist){
+        List<UserDTO> response = new ArrayList<>();
+        for (User user : userlist){
+            response.add(userToDTO(user));
+        }
+        return response;
+    }
 
 }

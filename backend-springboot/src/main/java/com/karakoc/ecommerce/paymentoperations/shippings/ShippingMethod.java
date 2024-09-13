@@ -1,4 +1,4 @@
-package com.karakoc.ecommerce.orders.shippings;
+package com.karakoc.ecommerce.paymentoperations.shippings;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

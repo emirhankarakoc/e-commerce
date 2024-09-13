@@ -1,7 +1,6 @@
-package com.karakoc.ecommerce.orders.shippings;
+package com.karakoc.ecommerce.paymentoperations.shippings;
 
-import com.karakoc.ecommerce.orders.shippings.requests.CreateShippingMethod;
-import org.springframework.web.bind.annotation.PathVariable;
+import com.karakoc.ecommerce.paymentoperations.shippings.requests.CreateShippingMethod;
 
 import java.util.List;
 

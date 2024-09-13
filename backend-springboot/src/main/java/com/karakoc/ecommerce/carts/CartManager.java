@@ -29,10 +29,10 @@ public class CartManager implements CartService{
     public Cart addToCart(String userId, AddToCartRequest r) {
         User buyer = userRepository.findById(userId).get();
         Product product = productRepository.findById(r.getProductId()).orElseThrow(()-> new NotfoundException("Product not found"));
-        Cart cart = buyer.getCart();
+        Cart cart = cartRepository.findById(buyer.getCartId()).orElseThrow(()->new NotfoundException("Cart not found."));
 
         CartItem item = new CartItem();
-        item.setCartId(buyer.getCart().getId());
+        item.setCartId(cart.getId());
         item.setId(UUID.randomUUID().toString());
         item.setProductId(product.getId());
         if (product.getImages().isEmpty()){
@@ -49,8 +49,9 @@ public class CartManager implements CartService{
         double summary = cart.getSummary();
         String priceWithoutDollarSymbol = product.getPrice().substring(1);
         cart.setSummary(summary+ Double.parseDouble(priceWithoutDollarSymbol));
+        cartRepository.save(cart); // az once bu yoktu, nasil calisiyordu?
         userRepository.save(buyer);
-        return buyer.getCart();
+        return cart;
     }
 
     @Override
@@ -58,19 +59,16 @@ public class CartManager implements CartService{
     public Cart removeFromCart(String userId, String cartItemId) {
         User buyer = userRepository.findById(userId).get();
         CartItem item = cartItemRepository.findById(cartItemId).orElseThrow(()-> new NotfoundException("Product not found"));
-        Cart cart = buyer.getCart();
+        Cart cart = cartRepository.findById(buyer.getCartId()).orElseThrow(()->new NotfoundException("Cart not found."));
 
-
-        if (buyer.getCart() == null){
-            throw new BadRequestException("You dont have any cart informations, you have to add something to your cart for remove it.");
-        }
 
         cart.getItems().remove(item);
         double summary = cart.getSummary();
         String newPriceWithoutDollarSymbol = item.getProductPrice().substring(1);
         cart.setSummary(summary- Double.parseDouble(newPriceWithoutDollarSymbol));
+        cartRepository.save(cart);
         userRepository.save(buyer);
         cartItemRepository.delete(item);
-        return buyer.getCart();
+        return cart;
     }
 }

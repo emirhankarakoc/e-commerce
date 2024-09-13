@@ -1,4 +1,3 @@
-import { APIURL, http, httpError } from "@/assets/http";
 import Footer from "@/components/Footer";
 import Navigation from "@/components/Navigation";
 import { Divider } from "@nextui-org/react";
@@ -81,8 +80,8 @@ export default function Checkout() {
 
       {activeState === "Payment" && (
         <Payment
-          addressId={selectedAdressId}
-          shippingMethodId={selectedShippingId}
+          addressId={selectedAdressId!}
+          shippingMethodId={selectedShippingId!}
         />
       )}
 

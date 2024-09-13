@@ -1,6 +1,5 @@
-package com.karakoc.ecommerce.orders.shippings.requests;
+package com.karakoc.ecommerce.paymentoperations.shippings.requests;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data

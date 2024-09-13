@@ -6,6 +6,7 @@ import User from "./components/User";
 import Addresses from "./components/Adresses";
 import { APIURL, http } from "@/assets/http";
 import Admin from "../admin/Admin";
+import { Orders } from "./components/Orders";
 
 export default function Profile() {
   const { menu } = useParams();
@@ -100,8 +101,4 @@ export default function Profile() {
       </div>
     </div>
   );
-}
-
-function Orders() {
-  return <div>Orders</div>;
 }

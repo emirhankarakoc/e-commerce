@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
 import { Provider } from "./provider.tsx";
 import "@/styles/globals.css";
+import { Toaster } from "sonner";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -13,5 +14,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <App />
       </Provider>
     </BrowserRouter>
-  </React.StrictMode>,
+    <Toaster richColors />
+  </React.StrictMode>
 );
