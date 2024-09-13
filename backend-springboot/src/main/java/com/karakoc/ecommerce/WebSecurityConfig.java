@@ -56,6 +56,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/products/**").permitAll()
                         .requestMatchers("/carts/**").permitAll()
+                        .requestMatchers("/orders/**").permitAll()
 
                         //cart, admin ve userli olmali
                         .requestMatchers("/shippingmethods/**").permitAll()
