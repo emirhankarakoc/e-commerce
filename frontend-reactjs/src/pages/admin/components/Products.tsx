@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
-function Products() {
+export default function Products() {
   const [products, setProducts] = useState<Product[] | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [filteredProducts, setFilteredProducts] = useState<Product[] | null>(
@@ -125,8 +125,8 @@ function Products() {
                     <Button
                       color="warning"
                       onClick={() => {
-                        handleUpdateProduct(product.id);
-                        setUpdateMenuActive(!isUpdateMenuActive);
+                        window.location.href =
+                          "/admin/smartphones/" + product.id;
                       }}
                     >
                       <i className="fa-solid fa-pen-to-square fa-xl"></i>
@@ -146,14 +146,6 @@ function Products() {
                   </div>
                 </div>
               </CardBody>
-              {isUpdateMenuActive && selectedProductId && (
-                <UpdateProduct
-                  product1={
-                    products.find((p) => p.id === selectedProductId) || {}
-                  }
-                  setState={setUpdateMenuActive}
-                />
-              )}
             </Card>
           ))
         ) : (
@@ -163,167 +155,3 @@ function Products() {
     </div>
   );
 }
-
-function UpdateProduct({
-  product1,
-  setState,
-}: {
-  product1: Product;
-  setState: (active: boolean) => void;
-}) {
-  const [isLoading, setLoading] = useState<boolean>();
-  const [modelName, setModelName] = useState(product1.modelName ?? "");
-  const [brandName, setBrandName] = useState(product1.brandName ?? "");
-  const [price, setPrice] = useState(product1.price ?? "");
-  const [oldPrice, setOldPrice] = useState(product1.oldPrice ?? "");
-  const [cpu, setCpu] = useState(product1.cpu ?? "");
-  const [numberOfCores, setNumberOfCores] = useState(
-    product1.numberOfCores ?? ""
-  );
-  const [battery, setBattery] = useState(product1.battery ?? "");
-  const [screenSize, setScreenSize] = useState(product1.screenSize ?? "");
-  const [description, setDescription] = useState(product1.description ?? "");
-
-  // New states for Details
-  const [descriptionDetails, setDescriptionDetails] = useState(
-    product1.details?.descriptionDetails ?? ""
-  );
-  const [screenDiagonal, setScreenDiagonal] = useState(
-    product1.details?.screenDiagonal ?? ""
-  );
-  const [screenResolution, setScreenResolution] = useState(
-    product1.details?.screenResolution ?? ""
-  );
-  const [screenRefreshRate, setScreenRefreshRate] = useState(
-    product1.details?.screenRefreshRate ?? ""
-  );
-  const [pixelDensity, setPixelDensity] = useState(
-    product1.details?.pixelDensity ?? ""
-  );
-  const [screenType, setScreenType] = useState(
-    product1.details?.screenType ?? ""
-  );
-  const [additionaly, setAdditionaly] = useState(
-    product1.details?.additionaly ?? ""
-  );
-  const handleUpdate = async () => {
-    setLoading(true);
-    try {
-      const jwtToken = localStorage.getItem("jwtToken");
-      const response = await http.put(
-        `/admins/smartphone/${product1.id}/basic`,
-        {
-          modelName,
-          brandName,
-          price,
-          oldPrice,
-          cpu,
-          numberOfCores,
-          battery,
-          screenSize,
-          description,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
-      alert("Update successful. Please refresh the page.");
-      console.log("Product updated:", response.data);
-    } catch (error) {
-      console.error("Error updating product:", error);
-    }
-    setLoading(false);
-  };
-
-  return (
-    <div className="px-20 py-10">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Product Update Menu</h1>
-        <Button color="danger" onClick={() => setState(false)}>
-          <i
-            className="fa-solid fa-xmark fa-2xl"
-            style={{ color: "white" }}
-          ></i>
-        </Button>
-      </div>
-      <div className="space-y-4">
-        <Input
-          isClearable
-          label="Model Name"
-          placeholder="Enter model name"
-          value={modelName}
-          onChange={(e) => setModelName(e.target.value)}
-        />
-        <Input
-          isClearable
-          label="Brand Name"
-          placeholder="Enter brand name"
-          value={brandName}
-          onChange={(e) => setBrandName(e.target.value)}
-        />
-        <Input
-          isClearable
-          label="Price"
-          placeholder="Enter price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        <Input
-          isClearable
-          label="Old Price"
-          placeholder="Enter old price"
-          value={oldPrice}
-          onChange={(e) => setOldPrice(e.target.value)}
-        />
-        <Input
-          isClearable
-          label="CPU"
-          placeholder="Enter CPU details"
-          value={cpu}
-          onChange={(e) => setCpu(e.target.value)}
-        />
-        <Input
-          isClearable
-          label="Number of Cores"
-          placeholder="Enter number of cores"
-          value={numberOfCores}
-          onChange={(e) => setNumberOfCores(e.target.value)}
-        />
-        <Input
-          isClearable
-          label="Battery"
-          placeholder="Enter battery details"
-          value={battery}
-          onChange={(e) => setBattery(e.target.value)}
-        />
-        <Input
-          isClearable
-          label="Screen Size"
-          placeholder="Enter screen size"
-          value={screenSize}
-          onChange={(e) => setScreenSize(e.target.value)}
-        />
-        <Input
-          isClearable
-          label="Description"
-          placeholder="Enter description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <Button
-          color="success"
-          fullWidth
-          isLoading={isLoading}
-          onClick={handleUpdate}
-        >
-          Update
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-export default Products;

@@ -22,6 +22,7 @@ export default function Profile() {
       try {
         const response = await http.get(`${APIURL}/accounts/getme`);
         setUser(response.data);
+        localStorage.setItem("role", response.data.role);
       } catch (error) {
         console.log(error);
       }

@@ -7,6 +7,7 @@ import com.karakoc.ecommerce.smartphones.memories.CreateMemoryRequest;
 import com.karakoc.ecommerce.smartphones.memories.Memory;
 import com.karakoc.ecommerce.smartphones.requests.CreateSmartphoneRequest;
 import com.karakoc.ecommerce.smartphones.requests.UpdateSmartphoneRequest;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
@@ -19,7 +20,6 @@ public interface SmartphoneService {
     Smartphone getSmartphone(String id);
     String deleteSmartphone(String id) throws IOException;
     List<Smartphone> getAllSmartphones();
-    String updateSmartphoneBasics(String id, UpdateSmartphoneRequest smartphone);
-
+    public Smartphone updateSmartphoneById(String smartphoneId, UpdateSmartphoneRequest r) throws IOException;
 
 }

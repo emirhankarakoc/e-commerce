@@ -107,7 +107,12 @@ export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     setLoading(true);
     e.preventDefault();
-
+    if (!shippingMethodId) {
+      toast.error("Shipping method must be selected.");
+    }
+    if (!addressId) {
+      toast.error("Address must be selected.");
+    }
     try {
       const data = await http.post("/orders", {
         shippingTypeId: shippingMethodId,
@@ -270,6 +275,7 @@ export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
                     Card Owner's Name
                   </label>
                   <input
+                    required
                     id="ownerName"
                     type="text"
                     value={ownerName}
@@ -284,6 +290,7 @@ export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
                     Card Number
                   </label>
                   <input
+                    required
                     id="cardNumber"
                     type="text"
                     value={cardNumber}
@@ -300,6 +307,7 @@ export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
                       Expiry Date (MM/YY)
                     </label>
                     <input
+                      required
                       id="expiryDate"
                       type="text"
                       value={expiryDate}
@@ -315,6 +323,7 @@ export default function Payment({ addressId, shippingMethodId }: PaymentProps) {
                       CVV
                     </label>
                     <input
+                      required
                       id="cvv"
                       type="text"
                       value={cvv}

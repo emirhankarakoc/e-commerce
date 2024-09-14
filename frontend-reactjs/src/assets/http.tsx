@@ -25,3 +25,7 @@ export const httpError = (error: any) => {
   }
   return errorMessage;
 };
+
+export const fetcher = (url: string) => {
+  return http.get(url).then((res) => res.data);
+};

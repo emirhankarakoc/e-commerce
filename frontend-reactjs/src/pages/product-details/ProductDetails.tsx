@@ -8,6 +8,7 @@ import { Button, CircularProgress } from "@nextui-org/react";
 import Details from "./components/Details";
 import Reviews from "./components/Reviews";
 import Discounts from "../homepage/components/Discounts";
+import { toast } from "sonner";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -70,7 +71,7 @@ export default function ProductDetails() {
           Authorization: `Bearer ${jwtToken}`,
         },
       });
-      alert("Item added to cart successfully.!");
+      toast.success("Item added to cart successfully.!");
     } catch (error) {
       httpError(error);
     }

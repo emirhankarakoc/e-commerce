@@ -37,6 +37,7 @@ export default function Login() {
 
       const jwt = response.data.accessToken;
       const userId = response.data.id;
+
       localStorage.setItem("jwtToken", jwt);
       localStorage.setItem("userId", userId);
 

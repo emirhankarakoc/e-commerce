@@ -22,6 +22,9 @@ public class Smartphone extends Product {
     private String mainCameraProps;
     private String guaranteeOption;
     private String battery;
+    @OneToOne
+    @JoinColumn(name = "detailId")
+    private Details details;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -35,7 +38,5 @@ public class Smartphone extends Product {
     private List<Memory> memoryOptions;
 
 
-    @OneToOne
-    @JoinColumn(name = "detailId")
-    private Details details;
+
 }

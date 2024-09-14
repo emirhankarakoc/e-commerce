@@ -4,7 +4,7 @@ interface ImageLink {
 
 interface Details {
   id: string;
-  descriptionDetails: string | null;
+  description: string | null;
   screenDiagonal: string;
   screenResolution: string;
   screenRefreshRate: string;

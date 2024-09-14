@@ -28,6 +28,7 @@ public class PaymentOperationController {
         return ResponseEntity.ok("Checkout succesful.");
     }
 
+
     @GetMapping("/all")
     public List<PaymentOperationResponse> getAllMyOrders(@AuthenticationPrincipal UserPrincipal principal){
         return paymentOperationService.getAllMyOrders(principal.getUserId());

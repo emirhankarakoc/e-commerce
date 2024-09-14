@@ -90,10 +90,20 @@ export default function Admin() {
           <Button color="success" onClick={handleProducts}>
             Products
           </Button>
-          <Button onClick={handleAddProduct} color="secondary">
+          <Button
+            color="secondary"
+            onClick={() => {
+              window.location.href = "/admin/smartphones/new";
+            }}
+          >
             Add Product
           </Button>
-          <Button color="warning" onClick={handleOrders}>
+          <Button
+            color="warning"
+            onClick={() => {
+              window.location.href = "/admin/orders";
+            }}
+          >
             Orders
           </Button>
         </div>
@@ -101,8 +111,6 @@ export default function Admin() {
       <div className="mx-32">
         {isUsersComponentActive && <Users />}
         {isProductsComponentActive && <Products />}
-        {isOrdersComponentActive && <Orders />}
-        {isAddProductComponentActive && <AddProduct />}
       </div>
     </div>
   );

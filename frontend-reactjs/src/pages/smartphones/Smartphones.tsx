@@ -191,17 +191,14 @@ const Smartphones: React.FC = () => {
                   className="bg-[#F6F6F6] hover:bg-[#dbdbdb] p-4 grid place-items-center"
                   key={product.id}
                 >
-                  <button className="flex items-end m-6">
-                    <i className="fa-regular fa-heart"></i>
-                  </button>
                   <img
                     src={product.images[0]?.imageUrl}
                     alt={product.modelName}
-                    className="w-[120px] h-[160px]"
+                    className="w-[120px] my-5 h-[160px]"
                   />
                   <p className="text-2xl  font-sfpro">{product.brandName}</p>
 
-                  <p className="text-xl font-bold mt-3 font-sfpro">
+                  <p className="text-xl font-bold my-1 font-sfpro">
                     {product.modelName}
                   </p>
                   <p className="mb-3 font-bold">{product.price}</p>

@@ -2,6 +2,7 @@ import { http } from "@/assets/http";
 import { Button } from "@nextui-org/button";
 import { Input, Textarea } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 export default function UpdateUser({
   user,
   setState,
@@ -28,7 +29,8 @@ export default function UpdateUser({
         profilePhotoPath,
         cart: user.cart, // Sepet bilgileri güncellenmediği için mevcut haliyle gönderiyoruz
       });
-      alert("Update successfull. Please refresh the page.");
+      toast.success("Update successfull. Please refresh the page.");
+
       console.log("User updated:", response.data);
     } catch (error) {
       console.error("Error updating user:", error);

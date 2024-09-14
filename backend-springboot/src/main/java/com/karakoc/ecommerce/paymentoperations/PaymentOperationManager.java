@@ -41,6 +41,11 @@ public class PaymentOperationManager implements PaymentOperationService {
 
 
     @Override
+    public List<PaymentOperation> getAllOrders() {
+        return paymentOperationRepository.findAll();
+    }
+
+    @Override
     public PaymentOperationResponse getOrder(String userId,String orderId) {
 
         PaymentOperation order = paymentOperationRepository.findById(orderId).orElseThrow(()->new NotfoundException("Order not found."));

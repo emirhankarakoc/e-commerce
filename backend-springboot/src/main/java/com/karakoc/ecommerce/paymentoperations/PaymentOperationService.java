@@ -12,6 +12,6 @@ public interface PaymentOperationService {
     void checkout(String userId, CreatePaymentOperationRequest r);
     List<PaymentOperationResponse> getAllMyOrders(String userId);
     PaymentOperationResponse getOrder(String userId, String orderId);
-
+    List<PaymentOperation> getAllOrders();
 
 }

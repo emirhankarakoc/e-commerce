@@ -55,8 +55,6 @@ public class SmartphoneManager implements SmartphoneService{
     @Override
     @Transactional
     public Smartphone createSmartphone(CreateSmartphoneRequest request) {
-        List<String> colorCodes = splitDataFromFrontend(request.getColorNames());
-        List<String> memories = splitDataFromFrontend(request.getMemoryOptions());
         Smartphone smartphone = new Smartphone();
         smartphone.setId(UUID.randomUUID().toString());
         smartphone.setBrandName(request.getBrandName());
@@ -70,7 +68,10 @@ public class SmartphoneManager implements SmartphoneService{
         smartphone.setDescription(request.getDescription());
         smartphone.setFrontCameraProps(request.getFrontCameraProps());
         smartphone.setMainCameraProps(request.getMainCameraProps());
+
         smartphone.setGuaranteeOption(request.getGuaranteeOption());
+        List<String> colorCodes = splitDataFromFrontend(request.getColorNames());
+        List<String> memories = splitDataFromFrontend(request.getMemoryOptions());
 
         smartphone.setColors(new ArrayList<>());
         smartphone.setMemoryOptions(new ArrayList<>());
@@ -101,7 +102,7 @@ public class SmartphoneManager implements SmartphoneService{
 
         List<Image> images = new ArrayList<>();
 
-        for (MultipartFile resim : request.getMultipartFiles()){
+        for (MultipartFile resim : request.getFiles()){
             try {
                 if (resim.isEmpty()) {
                     throw new BadRequestException("Empty file.");
@@ -133,31 +134,6 @@ public class SmartphoneManager implements SmartphoneService{
 
     }
 
-    @Override
-    @Transactional
-    public String updateSmartphoneBasics(String id, UpdateSmartphoneRequest request) {
-        // Akıllı telefonu bul
-        Smartphone smartphone = smartphoneRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Smartphone not found"));
-        // Basic alanları güncelle
-        smartphone.setBrandName(request.getBrandName());
-        smartphone.setModelName(request.getModelName());
-        smartphone.setPrice(request.getPrice());
-        smartphone.setOldPrice(request.getOldPrice());
-        smartphone.setScreenSize(request.getScreenSize());
-        smartphone.setCpu(request.getCpu());
-        smartphone.setNumberOfCores(request.getNumberOfCores());
-        smartphone.setBattery(request.getBattery());
-        smartphone.setDescription(request.getDescription());
-        smartphone.setFrontCameraProps(request.getFrontCameraProps());
-        smartphone.setMainCameraProps(request.getMainCameraProps());
-        smartphone.setGuaranteeOption(request.getGuaranteeOption());
-
-        // Güncellenmiş smartphoneu kaydet
-        smartphoneRepository.save(smartphone);
-
-        return "Smartphone updated successfully";
-    }
 
     @Override
     public Smartphone getSmartphone(String id) {
@@ -209,6 +185,104 @@ public class SmartphoneManager implements SmartphoneService{
     public List<Smartphone> getAllSmartphones() {
         List<Smartphone> smartphones = smartphoneRepository.findAll();
         return smartphones;
+
+    }
+
+    @Override
+    @Transactional
+    public Smartphone updateSmartphoneById(String smartphoneId, UpdateSmartphoneRequest r) throws IOException {
+        Smartphone smartphone = smartphoneRepository.findById(smartphoneId).orElseThrow(()-> new NotfoundException("Smartphone not found."));
+
+
+        smartphone.setBrandName(r.getBrandName());
+        smartphone.setModelName(r.getModelName());
+        smartphone.setPrice(r.getPrice());
+        smartphone.setOldPrice(r.getOldPrice());
+        smartphone.setScreenSize(r.getScreenSize());
+        smartphone.setCpu(r.getCpu());
+        smartphone.setNumberOfCores(r.getNumberOfCores());
+        smartphone.setFrontCameraProps(r.getFrontCameraProps());
+        smartphone.setMainCameraProps(r.getMainCameraProps());
+        smartphone.setGuaranteeOption(r.getGuaranteeOption());
+        smartphone.setBattery(r.getBattery());
+        smartphone.setDescription(r.getDescription());
+
+
+        Details details = smartphone.getDetails();
+        details.setDescription(r.getDescriptionDetails());
+        details.setScreenDiagonal(r.getScreenDiagonal());
+        details.setScreenResolution(r.getScreenResolution());
+        details.setScreenRefreshRate(r.getScreenRefreshRate());
+        details.setPixelDensity(r.getPixelDensity());
+        details.setScreenType(r.getScreenType());
+        details.setAdditionaly(r.getAdditionaly());
+        detailsRepository.save(details);
+
+        List<Color> colors = smartphone.getColors();
+        smartphone.setColors(new ArrayList<>());
+        smartphoneRepository.save(smartphone);
+        colorRepository.deleteAll(colors);
+        List<Memory> memories = smartphone.getMemoryOptions();
+        smartphone.setMemoryOptions(new ArrayList<>());
+        smartphoneRepository.save(smartphone);
+        memoryRepository.deleteAll(memories);
+
+        List<String> memories1 = splitDataFromFrontend(r.getMemoryOptions());
+        List<String> colorCodes = splitDataFromFrontend(r.getColorNames());
+
+        smartphone.setColors(new ArrayList<>());
+        smartphone.setMemoryOptions(new ArrayList<>());
+        smartphone.setReviews(new ArrayList<>());
+        smartphone.setImages(new ArrayList<>());
+
+        for (String colorName: colorCodes){
+            Color color = createColor(colorName);
+            smartphone.getColors().add(color);
+        }
+
+
+        for (String memoryValues: memories1){
+            Memory memory = createMemory(memoryValues);
+            smartphone.getMemoryOptions().add(memory);
+        }
+
+        smartphoneRepository.save(smartphone);
+
+        List<Image> images = smartphone.getImages();
+
+        for (Image image : images) {
+            cloudinaryService.delete(image.getCloudImageId());
+
+        }
+        imageRepository.deleteAll(images);
+        for (MultipartFile resim : r.getFiles()){
+            try {
+                if (resim.isEmpty()) {
+                    throw new BadRequestException("Empty file.");
+                }
+                // Cloudinary'ye yükle
+                Map uploadResult = cloudinaryService.upload(resim);
+
+                Image   smartphoneImage = new Image();
+                smartphoneImage.setId(UUID.randomUUID().toString());
+                smartphoneImage.setImageUrl((String) uploadResult.get("url"));
+                smartphoneImage.setCloudImageId(uploadResult.get("public_id").toString());
+                smartphoneImage.setProductType(ProductType.SMARTPHONE);
+                smartphoneImage.setName((String) uploadResult.get("original_filename"));
+                imageRepository.save(smartphoneImage);
+                images.add(smartphoneImage);
+
+            } catch (IOException e) {
+                //throw new BadRequestException(e.getMessage());
+            }
+        }
+
+        smartphone.getImages().addAll(images);
+
+        // Smartphone'u kaydet
+        smartphoneRepository.save(smartphone);
+        return smartphone;
+
 
     }
 

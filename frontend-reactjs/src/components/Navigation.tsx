@@ -23,6 +23,8 @@ export default function Navigation() {
 
   const handleLogOut = () => {
     localStorage.removeItem("jwtToken");
+    localStorage.removeItem("role");
+    localStorage.removeItem("userId");
     setLoggedIn(false);
     window.location.href = "/";
   };
@@ -36,23 +38,13 @@ export default function Navigation() {
             window.location.href = "/";
           }}
         >
-          ACME
+          KARAKOC
         </button>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link to="#" className="text-foreground">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link to="#" aria-current="page">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link to="#" className="text-foreground">
-            Integrations
+          <Link to="/smartphones" className="text-foreground">
+            Smartphones
           </Link>
         </NavbarItem>
       </NavbarContent>

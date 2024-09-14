@@ -10,6 +10,9 @@ import Admin from "./pages/admin/Admin";
 import AddProduct from "./pages/addProduct/AddProduct";
 import Checkout from "./pages/checkout/Checkout";
 import { OrderPage } from "./pages/orderPage/OrderPage";
+import { ProductUpdate } from "./pages/productupdate/ProductUpdate";
+import { Halilpage } from "./pages/halilpage/Halilpage";
+import { AdminOrderListPage } from "./pages/adminorder/AdminOrderListPage";
 function App() {
   return (
     <Routes>
@@ -21,7 +24,9 @@ function App() {
       <Route path="/orders/:orderId" element={<OrderPage />} />
 
       <Route path="/admin" element={<Admin />} />
-      <Route path="/admin/addproduct" element={<AddProduct />} />
+      <Route path="/admin/smartphones/:productId" element={<Halilpage />} />
+      <Route path="/admin/orders" element={<AdminOrderListPage />} />
+
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
