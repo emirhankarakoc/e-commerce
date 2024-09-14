@@ -12,8 +12,5 @@ import java.util.List;
 @Data
 public class UpdateUserDetailsRequest {
     private String email;
-
     private String fullName;
-
-
 }

@@ -7,6 +7,7 @@ import com.karakoc.ecommerce.paymentoperations.requests.PaymentOperationResponse
 import com.karakoc.ecommerce.paymentoperations.shippings.ShippingMethod;
 import com.karakoc.ecommerce.paymentoperations.shippings.ShippingMethodService;
 import com.karakoc.ecommerce.paymentoperations.shippings.requests.CreateShippingMethod;
+import com.karakoc.ecommerce.paymentoperations.shippings.requests.UpdateShippingMethod;
 import com.karakoc.ecommerce.security.UserPrincipal;
 import com.karakoc.ecommerce.smartphones.Smartphone;
 import com.karakoc.ecommerce.smartphones.SmartphoneRepository;
@@ -62,6 +63,14 @@ public class AdminController {
     @PostMapping("/shipping-methods")
     public ShippingMethod postShippingMethod(@RequestBody CreateShippingMethod r){
         return shippingMethodService.createShippingMethod(r);
+    }
+    @PutMapping("/shipping-methods/{id}")
+    public ShippingMethod putShippingMethod(@RequestBody UpdateShippingMethod r, @PathVariable String id){
+        return shippingMethodService.putShippingMethod(r,id);
+    }
+    @DeleteMapping("/shipping-methods/{id}")
+    public void deleteShippingMethod(@PathVariable String id){
+        shippingMethodService.deleteShippingMethod(id);
     }
 
 

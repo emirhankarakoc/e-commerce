@@ -250,32 +250,36 @@ export const Halilpage = () => {
             label="Upload Files"
             multiple
           />
-          <p className="border-4 border-red-600 p-10 text-red-800 col-span-12">
-            If you want to save the images, you need to download and re-upload
-            them. Because after the update, all existing images will be deleted
-          </p>
+
           {!isNew && (
-            <div className="col-span-4 md:col-span-12">
-              {product?.images.map((image, index) => (
-                <div key={index}>
-                  <img
-                    src={image.imageUrl}
-                    alt="product image"
-                    className="p-5"
-                  />
-                  <Button
-                    fullWidth
-                    as="a"
-                    href={image.imageUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    color="secondary"
-                    size="sm"
-                  >
-                    Download
-                  </Button>
-                </div>
-              ))}
+            <div>
+              <p className="border-4 border-red-600 p-10 text-red-800 col-span-12">
+                If you want to save the images, you need to download and
+                re-upload them. Because after the update, all existing images
+                will be deleted
+              </p>
+              <div className="col-span-4 md:col-span-12">
+                {product?.images.map((image, index) => (
+                  <div key={index}>
+                    <img
+                      src={image.imageUrl}
+                      alt="product image"
+                      className="p-5"
+                    />
+                    <Button
+                      fullWidth
+                      as="a"
+                      href={image.imageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      color="secondary"
+                      size="sm"
+                    >
+                      Download
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 

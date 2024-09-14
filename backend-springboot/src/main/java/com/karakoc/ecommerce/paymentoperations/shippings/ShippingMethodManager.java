@@ -2,6 +2,7 @@ package com.karakoc.ecommerce.paymentoperations.shippings;
 
 import com.karakoc.ecommerce.exceptions.general.NotfoundException;
 import com.karakoc.ecommerce.paymentoperations.shippings.requests.CreateShippingMethod;
+import com.karakoc.ecommerce.paymentoperations.shippings.requests.UpdateShippingMethod;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +36,19 @@ public class ShippingMethodManager implements ShippingMethodService {
     @Override
     public ShippingMethod getShippingMethod(String id) {
         return repository.findById(id).orElseThrow(()->new NotfoundException("Shipping Method not found."));
+    }
+
+    @Override
+    public ShippingMethod putShippingMethod(UpdateShippingMethod r, String methodId) {
+        ShippingMethod m = repository.findById(methodId).orElseThrow(()-> new NotfoundException("Shipping Method not found."));
+        m.setName(r.getName());
+        m.setCost(r.getCost());
+        m.setDescription(r.getDescription());
+        return repository.save(m);
+    }
+
+    @Override
+    public void deleteShippingMethod(String id) {
+        repository.deleteById(id);
     }
 }

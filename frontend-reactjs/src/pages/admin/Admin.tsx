@@ -7,16 +7,16 @@ import Users from "./components/Users";
 import Products from "./components/Products";
 import Orders from "./components/Orders";
 import AddProduct from "../addProduct/AddProduct";
+import { ShippingMethods } from "./components/ShippingMethods";
 
 export default function Admin() {
   const [isAdmin, setAdmin] = useState(false);
   const [isUsersComponentActive, setUsersComponentActive] = useState(false);
   const [isProductsComponentActive, setProductsComponentActive] =
     useState(false);
-  const [isOrdersComponentActive, setOrdersComponentActive] = useState(false);
-  const [isAddProductComponentActive, setAddProductComponentActive] =
-    useState(false);
 
+  const [isShippingComponentActive, setShippingComponentActive] =
+    useState(false);
   useEffect(() => {
     const handleGetMe = async () => {
       try {
@@ -35,33 +35,21 @@ export default function Admin() {
   }, []);
 
   const handleUser = () => {
-    setAddProductComponentActive(false);
-
     setUsersComponentActive(true);
     setProductsComponentActive(false);
-    setOrdersComponentActive(false);
+    setShippingComponentActive(false);
   };
 
   const handleProducts = () => {
-    setAddProductComponentActive(false);
     setUsersComponentActive(false);
     setProductsComponentActive(true);
-    setOrdersComponentActive(false);
+    setShippingComponentActive(false);
   };
 
-  const handleOrders = () => {
-    setAddProductComponentActive(false);
-
+  const handleShippingMethods = () => {
     setUsersComponentActive(false);
     setProductsComponentActive(false);
-    setOrdersComponentActive(true);
-  };
-  const handleAddProduct = () => {
-    setAddProductComponentActive(true);
-
-    setUsersComponentActive(false);
-    setProductsComponentActive(false);
-    setOrdersComponentActive(false);
+    setShippingComponentActive(true);
   };
 
   if (!isAdmin) {
@@ -90,6 +78,10 @@ export default function Admin() {
           <Button color="success" onClick={handleProducts}>
             Products
           </Button>
+          <Button color="danger" onClick={handleShippingMethods}>
+            Shipping Methods
+          </Button>
+
           <Button
             color="secondary"
             onClick={() => {
@@ -111,6 +103,7 @@ export default function Admin() {
       <div className="mx-32">
         {isUsersComponentActive && <Users />}
         {isProductsComponentActive && <Products />}
+        {isShippingComponentActive && <ShippingMethods />}
       </div>
     </div>
   );
