@@ -45,7 +45,7 @@ function Content() {
           <Input name="modelName" label="Model Name" className="col-span-1" />
           <Input
             name="price"
-            label="Price (dont forget put first $"
+            label="Price (dont forget put first $)"
             className="col-span-1"
           />
           <Input
@@ -111,11 +111,13 @@ function Content() {
           />
           {/* New inputs for arrays */}
           <Input
+            isRequired
             name="colorNames"
             label="Color codes (seperate with ',' ex: #FFFF, #123456,#F00000)"
             className="mb-4"
           />
           <Input
+            isRequired
             name="memoryOptions"
             label="Memory Options (seperate with ',' ex:64 GB,128 GB )"
             className="mb-4"

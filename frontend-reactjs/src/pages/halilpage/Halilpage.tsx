@@ -92,7 +92,7 @@ export const Halilpage = () => {
           <Input
             type="text"
             isRequired
-            label="Price"
+            label="Price (dont forget put first $)"
             name="Price"
             defaultValue={product?.price}
             className="col-span-12 md:col-span-6"
@@ -251,37 +251,40 @@ export const Halilpage = () => {
             multiple
           />
 
-          {!isNew && (
-            <div>
-              <p className="border-4 border-red-600 p-10 text-red-800 col-span-12">
-                If you want to save the images, you need to download and
-                re-upload them. Because after the update, all existing images
-                will be deleted
-              </p>
-              <div className="col-span-4 md:col-span-12">
-                {product?.images.map((image, index) => (
-                  <div key={index}>
-                    <img
-                      src={image.imageUrl}
-                      alt="product image"
-                      className="p-5"
-                    />
-                    <Button
-                      fullWidth
-                      as="a"
-                      href={image.imageUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      color="secondary"
-                      size="sm"
-                    >
-                      Download
-                    </Button>
-                  </div>
-                ))}
+          <div className="col-span-12">
+            {" "}
+            {!isNew && (
+              <div>
+                <p className="border-4 border-red-600 p-10 text-red-800 col-span-12">
+                  If you want to save the images, you need to download and
+                  re-upload them. Because after the update, all existing images
+                  will be deleted
+                </p>
+                <div className="col-span-4 md:col-span-12">
+                  {product?.images.map((image, index) => (
+                    <div key={index}>
+                      <img
+                        src={image.imageUrl}
+                        alt="product image"
+                        className="p-5"
+                      />
+                      <Button
+                        fullWidth
+                        as="a"
+                        href={image.imageUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        color="secondary"
+                        size="sm"
+                      >
+                        Download
+                      </Button>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
           <Button
             className="col-span-12 "

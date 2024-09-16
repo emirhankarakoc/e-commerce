@@ -14,10 +14,6 @@ export default function UpdateUser({
   const [email, setEmail] = useState(user.email || "");
   const [role, setRole] = useState(user.role || "");
   const [fullName, setFullName] = useState(user.fullName || "");
-  const [balance, setBalance] = useState(user.balance || "");
-  const [profilePhotoPath, setProfilePhotoPath] = useState(
-    user.profilePhotoPath || ""
-  );
 
   const handleUpdate = async () => {
     try {
@@ -25,8 +21,6 @@ export default function UpdateUser({
         email,
         role,
         fullName,
-        balance: parseFloat(balance),
-        profilePhotoPath,
         cart: user.cart, // Sepet bilgileri güncellenmediği için mevcut haliyle gönderiyoruz
       });
       toast.success("Update successfull. Please refresh the page.");
@@ -70,20 +64,6 @@ export default function UpdateUser({
           placeholder="Enter full name"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
-        />
-        <Input
-          isClearable
-          label="Balance"
-          placeholder="Enter balance"
-          value={balance}
-          onChange={(e) => setBalance(e.target.value)}
-        />
-        <Input
-          isClearable
-          label="Profile Photo Path"
-          placeholder="Enter profile photo path"
-          value={profilePhotoPath}
-          onChange={(e) => setProfilePhotoPath(e.target.value)}
         />
 
         <div className="mt-6">

@@ -186,7 +186,7 @@ export const ShippingMethods = () => {
                 className="mb-4"
               />
               <Input
-                label="Cost"
+                label="Cost (Don't put $ symbol. Just write value)"
                 value={cost}
                 onChange={(e) => setCost(e.target.value)}
                 className="mb-4"
@@ -232,7 +232,7 @@ export const ShippingMethods = () => {
                   className="mb-4"
                 />
                 <Input
-                  label="Cost"
+                  label="Cost (Don't put $ symbol. Just write value)"
                   value={cost}
                   onChange={(e) => setCost(e.target.value)}
                   className="mb-4"

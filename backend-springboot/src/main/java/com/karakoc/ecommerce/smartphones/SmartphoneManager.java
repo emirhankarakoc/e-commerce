@@ -47,10 +47,12 @@ public class SmartphoneManager implements SmartphoneService{
     private final MemoryRepository memoryRepository;
     private final CartRepository cartRepository;
 
-    private List<String> splitDataFromFrontend(String colors){
-        colors = colors.substring(1, colors.length()-1);
+    private List<String> splitColorsFromFrontend(String colors){
         String[] colorArray = colors.split(",");
         return List.of(colorArray);
+    }    private List<String> splitMemoryOptionsFromFrontend(String memories){
+        String[] memoryArray = memories.split(",");
+        return List.of(memoryArray);
     }
     @Override
     @Transactional
@@ -70,8 +72,8 @@ public class SmartphoneManager implements SmartphoneService{
         smartphone.setMainCameraProps(request.getMainCameraProps());
 
         smartphone.setGuaranteeOption(request.getGuaranteeOption());
-        List<String> colorCodes = splitDataFromFrontend(request.getColorNames());
-        List<String> memories = splitDataFromFrontend(request.getMemoryOptions());
+        List<String> colorCodes = splitColorsFromFrontend(request.getColorNames());
+        List<String> memories = splitMemoryOptionsFromFrontend(request.getMemoryOptions());
 
         smartphone.setColors(new ArrayList<>());
         smartphone.setMemoryOptions(new ArrayList<>());
@@ -227,8 +229,8 @@ public class SmartphoneManager implements SmartphoneService{
         smartphoneRepository.save(smartphone);
         memoryRepository.deleteAll(memories);
 
-        List<String> memories1 = splitDataFromFrontend(r.getMemoryOptions());
-        List<String> colorCodes = splitDataFromFrontend(r.getColorNames());
+        List<String> memories1 = splitMemoryOptionsFromFrontend(r.getMemoryOptions());
+        List<String> colorCodes = splitColorsFromFrontend(r.getColorNames());
 
         smartphone.setColors(new ArrayList<>());
         smartphone.setMemoryOptions(new ArrayList<>());
