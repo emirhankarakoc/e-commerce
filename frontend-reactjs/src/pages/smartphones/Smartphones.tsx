@@ -108,21 +108,22 @@ const Smartphones: React.FC = () => {
     const totalPoints = reviews.reduce((sum, review) => sum + review.point, 0);
     return totalPoints / reviews.length;
   };
-
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortCriteria) {
       case "Ascending":
         return (
-          parseFloat(a.price.slice(1, -1)) - parseFloat(b.price.slice(1, -1))
+          parseFloat(a.price.replace("$", "")) -
+          parseFloat(b.price.replace("$", ""))
         );
       case "Descending":
         return (
-          parseFloat(b.price.slice(1, -1)) - parseFloat(a.price.slice(1, -1))
+          parseFloat(b.price.replace("$", "")) -
+          parseFloat(a.price.replace("$", ""))
         );
       case "Rating":
         const avgRatingA = calculateAverageRating(a.reviews);
         const avgRatingB = calculateAverageRating(b.reviews);
-        return avgRatingB - avgRatingA; // Descending order: higher rating first
+        return avgRatingB - avgRatingA; // Higher ratings first
       default:
         return 0;
     }
@@ -187,31 +188,33 @@ const Smartphones: React.FC = () => {
           <div className="grid grid-cols-4 gap-4">
             {currentProducts.length > 0 ? (
               currentProducts.map((product) => (
-                <div
-                  className="bg-[#F6F6F6] hover:bg-[#dbdbdb] p-4 grid place-items-center"
-                  key={product.id}
-                >
-                  <img
-                    src={product.images[0]?.imageUrl}
-                    alt={product.modelName}
-                    className="w-[120px] my-5 h-[160px]"
-                  />
-                  <p className="text-2xl  font-sfpro">{product.brandName}</p>
-
-                  <p className="text-xl font-bold my-1 font-sfpro">
-                    {product.modelName}
-                  </p>
-                  <p className="mb-3 font-bold">{product.price}</p>
-                  <Button
-                    color="primary"
-                    onClick={() => {
-                      window.location.href = "/smartphones/" + product.id;
-                    }}
-                    className="px-12 bg-black rounded-md text-white py-4 mx-3"
+                <a href={`/smartphones/${product.id}`}>
+                  <div
+                    className="bg-[F6F6F6] hover:bg-[#dbdbdb] p-4 grid place-items-center"
+                    key={product.id}
                   >
-                    Buy Now
-                  </Button>
-                </div>
+                    <img
+                      src={product.images[0]?.imageUrl}
+                      alt={product.modelName}
+                      className="w-[120px] my-5 h-[160px]"
+                    />
+                    <p className="text-2xl  font-sfpro">{product.brandName}</p>
+
+                    <p className="text-xl font-bold my-1 font-sfpro">
+                      {product.modelName}
+                    </p>
+                    <p className="mb-3 font-bold">{product.price}</p>
+                    <Button
+                      color="primary"
+                      onClick={() => {
+                        window.location.href = "/smartphones/" + product.id;
+                      }}
+                      className="px-12 bg-black rounded-md text-white py-4 mx-3"
+                    >
+                      Buy Now
+                    </Button>
+                  </div>
+                </a>
               ))
             ) : (
               <div>No products found. Try adjusting your filters.</div>
