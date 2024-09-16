@@ -2,6 +2,7 @@ import { APIURL, http, httpError } from "@/assets/http";
 import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const Reviews = () => {
   const { id } = useParams();
@@ -67,7 +68,7 @@ const Reviews = () => {
     }
 
     if (comment.trim() === "" || rating < 1) {
-      alert("Please enter a comment and select a rating.");
+      toast.error("Please enter a comment and select a rating.");
       return;
     }
 
@@ -91,7 +92,7 @@ const Reviews = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      alert("Your review was submitted successfully.");
+      toast.success("Your review was submitted successfully.");
 
       // Refresh reviews after submission
       const updatedResponse = await http.get(`${APIURL}/reviews/${id}`);
@@ -192,7 +193,7 @@ const Reviews = () => {
                   review.userProfilePictureImageUrl ||
                   "https://via.placeholder.com/48"
                 }
-                alt={review.userFullname || "none"}
+                alt={review.userFullname}
                 className="w-12 h-12 rounded-full object-cover"
               />
               <div className="flex-1">

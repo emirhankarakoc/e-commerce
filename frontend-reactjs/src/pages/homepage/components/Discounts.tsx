@@ -51,7 +51,9 @@ export default function Discounts() {
                 {product.price}
               </div>
               <div className="grid place-items-center">
-                <Button color="danger">Buy Now</Button>
+                <a href="/smartphones">
+                  <Button color="danger">Buy Now</Button>
+                </a>
               </div>
             </div>
           </div>

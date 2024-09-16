@@ -5,6 +5,7 @@ import com.karakoc.ecommerce.exceptions.general.NotfoundException;
 import com.karakoc.ecommerce.reviews.requests.CreateReviewRequest;
 import com.karakoc.ecommerce.smartphones.Smartphone;
 import com.karakoc.ecommerce.smartphones.SmartphoneRepository;
+import com.karakoc.ecommerce.user.User;
 import com.karakoc.ecommerce.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -27,9 +28,11 @@ public class ReviewManager implements ReviewService{
     @Transactional
     public Review createReview(String userId, CreateReviewRequest request) {
         Smartphone smartphone = smartphoneRepository.findById(request.getSmartphoneId()).orElseThrow(()-> new NotfoundException("Smartphone not found"));
+        User user = userRepository.findById(userId).orElseThrow(()-> new NotfoundException("User not found.")) ;
         Review review = new Review();
         review.setId(UUID.randomUUID().toString());
-        review.setUserFullname(userRepository.findById(userId).get().getFullName());
+        review.setUserFullname(user.getFullName());
+        review.setUserProfilePictureImageUrl(user.getProfilePhotoPath());
         review.setDate(LocalDate.now());
         review.setContent(request.getContent());
         review.setSmartphoneId(request.getSmartphoneId());

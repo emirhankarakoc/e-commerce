@@ -1,22 +1,19 @@
 package com.karakoc.ecommerce.user.controllers;
 
 
-import com.karakoc.ecommerce.paymentoperations.PaymentOperation;
 import com.karakoc.ecommerce.paymentoperations.PaymentOperationService;
 import com.karakoc.ecommerce.paymentoperations.requests.PaymentOperationResponse;
 import com.karakoc.ecommerce.paymentoperations.shippings.ShippingMethod;
 import com.karakoc.ecommerce.paymentoperations.shippings.ShippingMethodService;
 import com.karakoc.ecommerce.paymentoperations.shippings.requests.CreateShippingMethod;
 import com.karakoc.ecommerce.paymentoperations.shippings.requests.UpdateShippingMethod;
-import com.karakoc.ecommerce.security.UserPrincipal;
 import com.karakoc.ecommerce.smartphones.Smartphone;
 import com.karakoc.ecommerce.smartphones.SmartphoneRepository;
 import com.karakoc.ecommerce.smartphones.SmartphoneService;
-import com.karakoc.ecommerce.smartphones.requests.UpdateSmartphoneRequest;
 import com.karakoc.ecommerce.user.UserDTO;
 import com.karakoc.ecommerce.user.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -38,13 +35,31 @@ public class AdminController {
     public List<Smartphone> getAllSmartphones() {
         return smartphoneRepository.findAll();
     }
+    
     @DeleteMapping("/smartphones/{id}")
     public String deleteSmartphone(@PathVariable String id) throws IOException {
         return smartphoneService.deleteSmartphone(id);
     }
     @GetMapping("/orders")
-    public List<PaymentOperation> getAllOrders(){
+    public List<PaymentOperationResponse> getAllOrders(){
             return paymentOperationService.getAllOrders();
+    }
+
+    @PutMapping("/orders/sent/{id}")
+    public ResponseEntity setPaymentStatusToSent(@PathVariable String id) {
+         paymentOperationService.setPaymentStatusToSent(id);
+         return ResponseEntity.ok("Order status updated to SENT successfully.");
+    }
+    @PutMapping("/orders/finished/{id}")
+    public ResponseEntity setPaymentStatusToFinished(@PathVariable String id) {
+         paymentOperationService.setPaymentStatusToFinished(id);
+        return ResponseEntity.ok("Order status updated to FINISHED successfully.");
+
+    }   @PutMapping("/orders/preparing/{id}")
+    public ResponseEntity setPaymentStatusToPreparing(@PathVariable String id) {
+         paymentOperationService.setPaymentStatusToPreparing(id);
+        return ResponseEntity.ok("Order status updated to PREPARING successfully.");
+
     }
     @GetMapping("/users")
     public List<UserDTO> getAllUsers(){

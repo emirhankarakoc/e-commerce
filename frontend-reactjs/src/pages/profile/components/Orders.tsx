@@ -88,23 +88,17 @@ export const Orders = () => {
                 )}
               </TableCell>
               <TableCell>
-                {order.smartphones.length == 1 ? (
-                  <div className="grid place-items-center">
-                    {order.smartphones.length}
-                  </div>
-                ) : (
-                  <div className="grid place-items-center">
-                    <div>{order.smartphones.length} device</div>
-                    <Button
-                      color="warning"
-                      onClick={() => {
-                        window.location.href = "/orders/" + order.id;
-                      }}
-                    >
-                      Details
-                    </Button>
-                  </div>
-                )}
+                <div className="grid place-items-center">
+                  <div>{order.smartphones.length} device</div>
+                  <Button
+                    color="warning"
+                    onClick={() => {
+                      window.location.href = "/orders/" + order.id;
+                    }}
+                  >
+                    Details
+                  </Button>
+                </div>
               </TableCell>
               <TableCell>{order.adress}</TableCell>
               <TableCell>{order.shippingType}</TableCell>

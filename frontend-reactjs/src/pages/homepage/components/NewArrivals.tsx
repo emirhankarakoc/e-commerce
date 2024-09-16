@@ -1,4 +1,5 @@
 import { Button } from "@nextui-org/button";
+import { toast } from "sonner";
 
 export default function NewArrivals() {
   const products = [
@@ -102,7 +103,12 @@ export default function NewArrivals() {
                 {product.price}
               </div>
               <div className="grid place-items-center">
-                <Button color="primary">Buy Now</Button>
+                <Button
+                  onClick={() => (window.location.href = "/smartphones")}
+                  color="primary"
+                >
+                  Buy Now
+                </Button>
               </div>
             </div>
           </div>

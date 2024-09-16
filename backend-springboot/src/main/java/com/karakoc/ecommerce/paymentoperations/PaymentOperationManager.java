@@ -39,10 +39,27 @@ public class PaymentOperationManager implements PaymentOperationService {
         clearCartAfterOrder(userId);
     }
 
+    public void setPaymentStatusToSent(String orderId) {
+        PaymentOperation order = paymentOperationRepository.findById(orderId).orElseThrow(()-> new NotfoundException("Payment Operation not found."));
+        order.setStatus(Status.SENT);
+        paymentOperationRepository.save(order);
+    }
+
+    public void setPaymentStatusToFinished(String orderId) {
+        PaymentOperation order = paymentOperationRepository.findById(orderId).orElseThrow(()-> new NotfoundException("Payment Operation not found."));
+        order.setStatus(Status.FINISHED);
+        paymentOperationRepository.save(order);
+    }
+
+    public void setPaymentStatusToPreparing(String orderId) {
+        PaymentOperation order = paymentOperationRepository.findById(orderId).orElseThrow(()-> new NotfoundException("Payment Operation not found."));
+        order.setStatus(Status.PREPARING);
+        paymentOperationRepository.save(order);
+    }
 
     @Override
-    public List<PaymentOperation> getAllOrders() {
-        return paymentOperationRepository.findAll();
+    public List<PaymentOperationResponse> getAllOrders() {
+        return mapList(paymentOperationRepository.findAll());
     }
 
     @Override
@@ -125,15 +142,15 @@ public class PaymentOperationManager implements PaymentOperationService {
         return response;
     }
     public PaymentOperationResponse map(PaymentOperation o, Cart cart){
-
+        User user = userRepository.findById(o.getUserId()).orElseThrow(()-> new NotfoundException("User not found."));
         ShippingMethod sh = shippingMethodRepository.findById(o.getShippingTypeId()).orElseThrow(()-> new NotfoundException("Shipping method not found."));
         Address as = addressRepository.findById(o.getAddressId()).orElseThrow(()-> new NotfoundException("Address not found."));
         PaymentOperationResponse r = new PaymentOperationResponse();
-        r.setId(o.getId());
-        r.setUserId(o.getUserId());
+        r.setId(o.getId() );
+        r.setUserId(o.getUserId()+ " -Mail:" + user.getEmail());
         r.setSmartphones(cart.getItems());
         r.setShippingType(sh.getName());
-        r.setAdress(as.getTitle());
+        r.setAdress(as.getTitle() + " tel: " + as.getPhoneNumber() + " full: " + as.getFullAddress());
         r.setCardOwnerName(o.getCardOwnerName());
         r.setSubtotal(o.getSubtotal());
         r.setDate(o.getDate());

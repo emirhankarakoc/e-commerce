@@ -83,32 +83,34 @@ export const OrderPage = () => {
           </div>
           <div className="col-span-1">
             {order.smartphones.map((item, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-3 my-5 border-3 border-purple-950 rounded-3xl p-10"
-              >
-                <div className="col-span-2">
-                  <p>
-                    <strong>Name:</strong>
-                    {item.productName}
-                  </p>
-                  <p>
-                    <strong>Price:</strong>
-                    {item.productPrice}
-                  </p>
-                  <p>
-                    <strong>Extras:</strong>
-                    {item.extras}
-                  </p>
+              <a href={`/smartphones/${item.productId}`}>
+                <div
+                  key={index}
+                  className="grid grid-cols-3 my-5 border-3 border-purple-950 rounded-3xl p-10"
+                >
+                  <div className="col-span-2">
+                    <p>
+                      <strong>Name:</strong>
+                      {item.productName}
+                    </p>
+                    <p>
+                      <strong>Price:</strong>
+                      {item.productPrice}
+                    </p>
+                    <p>
+                      <strong>Extras:</strong>
+                      {item.extras}
+                    </p>
+                  </div>
+                  <div className="col-span-1">
+                    <img
+                      className="w-32 h-20"
+                      src={item.productImage}
+                      alt="product image"
+                    />
+                  </div>
                 </div>
-                <div className="col-span-1">
-                  <img
-                    className="w-32 h-20"
-                    src={item.productImage}
-                    alt="product image"
-                  />
-                </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>

@@ -14,10 +14,7 @@ export default function Products() {
   const [filteredProducts, setFilteredProducts] = useState<Product[] | null>(
     null
   );
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(
-    null
-  );
-  const [isUpdateMenuActive, setUpdateMenuActive] = useState<boolean>(false);
+  const [selectedProductId, setSelectedProductId] = useState<string>();
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -51,26 +48,11 @@ export default function Products() {
     }
   }, [searchQuery, products]);
 
-  const handleUpdateProduct = (id: string) => {
-    setSelectedProductId(id);
-    setUpdateMenuActive(true);
-  };
-
-  const handleCloseUpdateMenu = () => {
-    setUpdateMenuActive(false);
-    setSelectedProductId(null);
-  };
-
   const handleDeleteProduct = async (id: string) => {
+    setSelectedProductId(id);
     setLoading(true);
-    const jwtToken = localStorage.getItem("jwtToken");
     try {
-      await http.delete(`/admins/smartphones/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      });
+      await http.delete(`/admins/smartphones/${id}`, {});
       setProducts(products?.filter((product) => product.id !== id) || []);
     } catch (error) {
       httpError(error);
@@ -107,14 +89,16 @@ export default function Products() {
               <CardBody>
                 <div className="grid grid-cols-12 gap-4">
                   <div className="col-span-4">
-                    <img
-                      src={
-                        product.images[0]?.imageUrl ||
-                        "https://via.placeholder.com/150"
-                      }
-                      alt={product.modelName}
-                      className="w-full h-auto"
-                    />
+                    <a href={`/smartphones/${product.id}`}>
+                      <img
+                        src={
+                          product.images[0]?.imageUrl ||
+                          "https://via.placeholder.com/150"
+                        }
+                        alt={product.modelName}
+                        className="w-full h-auto"
+                      />
+                    </a>
                   </div>
                   <div className="col-span-4 flex flex-col justify-center items-start">
                     <p className="font-bold">{product.modelName}</p>
@@ -132,7 +116,7 @@ export default function Products() {
                       <i className="fa-solid fa-pen-to-square fa-xl"></i>
                     </Button>
                     <Button
-                      isLoading={isLoading}
+                      isLoading={isLoading && selectedProductId === product.id}
                       color="danger"
                       onClick={() => {
                         window.location.href = "#loadingbar";

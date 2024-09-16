@@ -36,9 +36,11 @@ function Texts() {
         The new 15‑inch MacBook Air makes room for more of what you love with a
         spacious Liquid Retina display.
       </p>
-      <Button variant="bordered" className="px-20">
-        Shop Now
-      </Button>
+      <a href="/smartphones">
+        <Button variant="bordered" className="px-20">
+          Shop Now
+        </Button>
+      </a>
     </div>
   );
 }

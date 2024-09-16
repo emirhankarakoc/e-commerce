@@ -176,7 +176,7 @@ public class SmartphoneManager implements SmartphoneService{
 
     private double calculateCartSummary(List<CartItem> items) {
         return items.stream()
-                .mapToDouble(item -> Double.parseDouble(item.getProductPrice())) // Convert price string to double
+                .mapToDouble(item -> Double.parseDouble(item.getProductPrice().substring(1))) // Convert price string to double
                 .sum();
     }
 
