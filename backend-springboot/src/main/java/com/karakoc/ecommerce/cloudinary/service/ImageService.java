@@ -1,7 +1,7 @@
 package com.karakoc.ecommerce.cloudinary.service;
 
 
-import com.karakoc.ecommerce.cloudinary.entity.Image;
+import com.karakoc.ecommerce.cloudinary.model.Image;
 import com.karakoc.ecommerce.cloudinary.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

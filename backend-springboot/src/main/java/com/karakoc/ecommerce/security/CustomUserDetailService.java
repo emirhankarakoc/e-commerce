@@ -1,6 +1,6 @@
 package com.karakoc.ecommerce.security;
 
-import com.karakoc.ecommerce.user.UserRepository;
+import com.karakoc.ecommerce.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,10 +1,9 @@
 package com.karakoc.ecommerce.cloudinary.controller;
 
-import com.karakoc.ecommerce.cloudinary.entity.Image;
+import com.karakoc.ecommerce.cloudinary.model.Image;
 import com.karakoc.ecommerce.cloudinary.service.CloudinaryService;
 import com.karakoc.ecommerce.cloudinary.service.ImageService;
-import com.karakoc.ecommerce.products.Product;
-import com.karakoc.ecommerce.products.ProductType;
+import com.karakoc.ecommerce.products.model.ProductType;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
