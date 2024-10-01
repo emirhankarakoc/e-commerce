@@ -97,6 +97,21 @@ Actually , you don't need backend for user guide but let me explain how works, b
 ### Creating an adress for buying
 
 - You need choose address to shipping. You can't buy without address and shipping method and ofc product...
+- Create an address from `POST /users/addresses` with your `jwt token`. If you don't use, you will get 401. So you have to log in.
+
+### Creating order
+- You must logged in for create an order.
+- Cart (Backend pulls your cart from your user id from jwt token.)
+- Address Id 
+- Shipping Method Id
+- Card details (ownerName, expiration,cvv,cardNumber)
+
+### Listing your orders
+- `GET /orders/all` gives all your orders. So you need logged in for use this endpoint.
+- You also can see single order `GET /orders/{id}`
+- You can see order status:  `PREPARING,SENT,FINISHED` 
+
+
 
 ## Contributing
 
