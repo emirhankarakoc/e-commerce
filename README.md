@@ -24,4 +24,4 @@ npm install
 npm run dev
 ```
 
-This is a portfolio demo. It has a Spring startup test, but no full set of tests for the shop flows. Replace old credentials from Git history if they were used on real accounts.
+This is a portfolio shop project.
