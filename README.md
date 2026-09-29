@@ -1,6 +1,6 @@
 # E-commerce App
 
-A shop demo with a Spring Boot API and a React/TypeScript app. The backend has accounts, products, carts, and catalog data in MySQL.
+A shop demo with a Spring Boot API and a React/TypeScript app. The backend has accounts, products, carts, orders, and shipping methods in MySQL. The React app has product, cart, checkout, and order pages.
 
 ## Code
 
@@ -9,7 +9,7 @@ A shop demo with a Spring Boot API and a React/TypeScript app. The backend has a
 
 ## Run locally
 
-You need Java 17, MySQL 8, and Node.js. Set your database and Spring profile. Set `JWT_SECRET` and `DEMO_USER_PASSWORD`. Image upload needs your own Cloudinary settings, including `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET`.
+You need Java 17, MySQL 8, and Node.js. The default Spring profile is `dev`. Set its MySQL URL, user, and `DB_PASSWORD` in `backend-springboot/src/main/resources/application-dev.properties`. Set `JWT_SECRET` and `DEMO_USER_PASSWORD` in your environment.
 
 ```bash
 cd backend-springboot
