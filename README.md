@@ -1,45 +1,28 @@
-# E Commerce App
-## Builded with Spring Boot and React.js
-### Environment Setup
-- Node.js 20 [click here for download](https://nodejs.org/en/download/package-manager)
-- Java Development Kit 17 (JDK 17) [click here for download](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) (I strongly recommend MSI Installers if you use Windows)
-- Any code editor which I recommend  [vscode](https://code.visualstudio.com/download) for frontend, [intelij idea](https://www.jetbrains.com/idea/)
- for backend 
+# E-commerce Application
 
-### Control Environment Is Ready or Not
-- for nodejs, just type `node -v` to cmd or shell
-- for jdk, just type `java -version` to cmd or shell
-- if everything is fine, lets start with downloading repo.
-[click here for download](https://github.com/emirhankarakoc/e-commerce/archive/refs/heads/main.zip)
+A full-stack shop prototype with a Spring Boot API and React/TypeScript frontend. The backend models accounts, products, carts, and related catalog data.
 
-### After downloading, unzip the repo and open it. 
-As you see, there is two folders. One of them is backend called `backend-springboot` other one is frontend called `frontend-reactjs` (simple)
-<br> Choose a folder and open it then `right click menu - open with VSCode/Intellij Idea`.
+## Backend
+The `backend-springboot/` module uses Spring Security, Spring Data JPA, and MySQL. Feature packages separate controllers, services, and repositories. Authentication and catalog/cart flows are the main areas to inspect.
 
-### If you chosen backend we are one more step far from starting the server
-#### Database Setup
-- Mysql 8 [download link](https://dev.mysql.com/downloads/installer/)
-- Mysql Workbench (or another db connector) [download link](https://dev.mysql.com/downloads/workbench/)
-#
-Install mysql, install workbench and change my username and password with yours in `src > main > resources > applcation.properties` file
-## Server installation finished.
-![image](https://github.com/user-attachments/assets/e13cb511-f42a-4b4f-9752-855ae691d136)<br>
-As you see, server just started.
-<br> 
-### Server Port
-If you dont change from `application.properties`, port will be :8080 (if there is empty)
+## Frontend
+`frontend-reactjs/` is a React/TypeScript client for the API.
 
+## Run locally
+Install Java 17, MySQL 8, and Node.js. Configure a local database and the active Spring profile. Provide `JWT_SECRET` and `DEMO_USER_PASSWORD` as environment variables. Image upload requires your own Cloudinary configuration and `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET`. Check the profile-specific properties before starting the API.
 
-## Frontend start
-- we dont need another application here like mysql, we have node.js and this will enough for now.
+```bash
+cd backend-springboot
+./mvnw spring-boot:run
+```
 
-### Open the `frontend-reactjs` folder and `right click - open with VSCode`
-After opened, just open the terminal with 
-- ctrl + shift + \` (last character below the esc button)
+In a second terminal:
 
-### Starting with install required folders, open terminal and type
+```bash
+cd frontend-reactjs
+npm install
+npm run dev
+```
 
-- npm install
-- npm run dev
-
-this will be enough for environment setup. thanks for joining me.
+## Status
+This is a portfolio prototype. The repository has a Spring Boot context test, but does not yet provide comprehensive business-flow tests. Credentials previously committed to Git history should be replaced if they were used on active services.
