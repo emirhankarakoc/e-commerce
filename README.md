@@ -24,4 +24,3 @@ npm install
 npm run dev
 ```
 
-This is a portfolio shop project.
